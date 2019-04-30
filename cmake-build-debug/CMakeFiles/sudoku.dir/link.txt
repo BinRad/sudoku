@@ -1,0 +1,1 @@
+/usr/bin/c++  -g   CMakeFiles/sudoku.dir/one.cpp.o  -o sudoku 
