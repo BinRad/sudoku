@@ -6,29 +6,24 @@
 namespace sudoku_one {
 
 
-    template<class Item>
     class board {
 
     public:
         // typedefs
-        typedef Item value;
+        typedef int value;
 
-        // constructor
-        board();
-
-        ~board() {
+        // constructor & destructor
+        board(){}
+        ~board() {//inline function
             delete[] init;
             delete[] matrix;
         }
 
         // Modification functions
-        void mod_ini(int x, int y, Item &entry);
-
-        void mod_perm(int x, int y, Item &entry);
-
-        void mod_temp(int x, int y, Item &entry, bool green);
-
-        void printout();
+        void mod_ini(int x, int y, int &entry); 	//setting permanent positions in the board originally
+        void mod_perm(int x, int y, int &entry);	//a set of values that are definitely correct in their position
+        void mod_temp(int x, int y, int &entry, bool green);//set of values that may be the solution to the board
+        void printout();				// prints whatvever is in the board
 
     private:
         // matrix that holds restricted data

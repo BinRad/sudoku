@@ -6,7 +6,7 @@
 
 
 int main(){
-    sudoku_one::board<int> lev(nullptr);
+    sudoku_one::board lev;
     for(int i = 0; i<=8; i++){
         for(int j = 0; j <= 8; j++){
             int q = 0;
