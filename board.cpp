@@ -31,20 +31,49 @@ namespace sudoku_one{
             matrix[x][y] = entry;
         }
     }
-    void const board::printout() {
+    void const board::printout(int m) {
+      if(m == 0 || m == 1){
+      std::cout << "\n initial board:";
       for(int i = 0; i < 9; i++){
           std::cout << std::endl;
           for(int j = 0; j < 9; j++){
               std::cout << init[i][j] << " ";
           }
         }
+      }
         std::cout << std::endl;
+        if(m == 0 || m == 2){
+        std::cout << "\n current board:";
         for(int i = 0; i < 9; i++){
             std::cout << std::endl;
             for(int j = 0; j < 9; j++){
                 std::cout << matrix[i][j] << " ";
             }
           }
-        std::cout << std::endl;
+        }
+          std::cout << std::endl;
+          if(m == 0 || m == 3){
+          std::cout << "\n rank:";
+          for(int i = 0; i < 9; i++){
+              std::cout << std::endl;
+              if( i == 3 || i==6){
+                std::cout << std::endl;
+              }
+              for(int j = 0; j < 9; j++){
+                  std::cout << rank[i][j] << " ";
+                  if(j == 2 || j == 5){
+                    std::cout << "  ";
+                  }
+              }
+            }
+            std::cout << "\n";
+    }
+  }
+
+    int board::read(int x, int y){
+      return matrix[x][y];
+    }
+    int board::readrank(int x, int y){
+      return rank[x][y];
     }
 }

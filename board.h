@@ -1,3 +1,9 @@
+//printout 0 = all
+//         1 = initial board
+//         2 = current board
+//         3 = rank board
+
+
 #ifndef SUDOKU_ONE_BOARD_H
 #define SUDOKU_ONE_BOARD_H
 
@@ -12,8 +18,10 @@ namespace sudoku_one {
         // Modification functions
         void mod_ini(int x, int y, int entry); 	//setting permanent positions in the board originally
         void mod(int x, int y, int entry);	//a set of values that are definitely correct in their position
-        void mod_temp(int x, int y, int entry, bool green);//set of values that may be the solution to the board
-        void const printout();				          // prints whatvever is in the board
+        void modrank(int x, int y, int entry);
+        void const printout(int m = 0);				          // prints whatvever is in the board
+        int read(int x, int y);
+        int readrank(int x, int y);
     private:
         // matrix that holds restricted data
         int init[9][9];
