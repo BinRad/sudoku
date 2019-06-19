@@ -8,7 +8,7 @@ namespace sudoku_one{
 //	int ini[9][9]
               //matrix that holds general data
         for(int i = 0; i < 9; i++){
-            for (int j = 0; j < 9; j++) {
+            for(int j = 0; j < 9; j++){
                  init[i][j] = 0;
                  matrix[i][j] = 0;
             }
@@ -69,6 +69,13 @@ namespace sudoku_one{
             std::cout << "\n";
     }
   }
+    void board::clearrank(){
+      for(int i = 0; i < 9; i++){
+        for(int j = 0; j < 9; j++){
+            rank[i][j] = 0;
+          }
+        }
+      }
 
     int board::read(int x, int y){
       return matrix[x][y];

@@ -19,13 +19,14 @@ namespace sudoku_one {
         void mod_ini(int x, int y, int entry); 	//setting permanent positions in the board originally
         void mod(int x, int y, int entry);	//a set of values that are definitely correct in their position
         void modrank(int x, int y, int entry);
-        void const printout(int m = 0);				          // prints whatvever is in the board
+        void const printout(int m = 0);
+        void clearrank();			          // prints whatvever is in the board
         int read(int x, int y);
         int readrank(int x, int y);
     private:
         // matrix that holds restricted data
         int init[9][9];
-        //matrix that holds general data
+        // matrix that holds general data
         int matrix[9][9];
 
     };

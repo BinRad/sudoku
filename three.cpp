@@ -1,8 +1,3 @@
-// two.cpp uses the ranking system to choose which
-// number to find the answer to first that is most
-// likely to be the most accurate using the what
-// numbers are in the rows and columns and subsquare
-// with it.
 #include <iostream>
 #include "board.h"
 int* ranker(sudoku_one::board& lev);
@@ -82,7 +77,6 @@ int* ranker(sudoku_one::board& lev){
       }
     }
   }
-  lev.printout();
   // SUM SECTION
   int section[9];
   for(int i = 0; i < 9; i++){
