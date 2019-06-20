@@ -60,7 +60,7 @@ int main(){
                 }
               }
           }
-      lev.mod(i,j, answ);
+      lev.mod(i,j, answ);//this will also take the entry out of the rankings
       if(answ > 9){std::cout << "Error!!       ";}
       }
       p = ranker(lev);//gets coordinates of easiest entry

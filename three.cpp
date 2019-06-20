@@ -1,7 +1,13 @@
+// TODO: SOLVER THREE
+// use recursion to make backtracking easy
+
 #include <iostream>
 #include "board.h"
+//prototyping
+void solve(int i, int j, sudoku_one::board &lev);
 int* ranker(sudoku_one::board& lev);
 
+//MAIN function
 int main(){
     sudoku_one::board lev;
     for(int i = 0; i < 9; i++){
@@ -17,17 +23,17 @@ int main(){
       }
     }
     std::cout << "Finished the for loop \n";
+    int *p;
+    p = ranker(lev);
+        int i = *p;//x coordiante of entry
+        int j = *(p+1); //  y coordinate of entry
+        solve(i, j, lev);
+      lev.printout();
+return 0;
+}
 
-// TODO: SOLVER TWO
-// create a rank system so that it fills out
-// the most obvious entries first
-  int *p;
-  p = ranker(lev);
-    while(*p != 99){
-      std::cout << *p;
-      //<< "," << *(p+1) << "";
-      int i = *p;//x coordiante of entry
-      int j = *(p+1); //  y coordinate of entry
+//SOLVE function
+void solve(int i, int j, sudoku_one::board &lev){
 //copied from ONE.CPP
       int answ = 1;
       //default entry when not specified is 1
@@ -35,7 +41,7 @@ int main(){
           for(int k = 0; k < 9; k++){
               //this goes throught the row and column of each
               //entry and incrments if # is already in column
-              // then set k =0 so that it can check all the
+              // then set k = 0 so that it can check all the
               //entrys against the new answer
               if(lev.read(i,k) == answ){
                   answ++;
@@ -55,16 +61,22 @@ int main(){
                 }
               }
           }
-      lev.mod(i,j, answ);
+      lev.mod(i,j, answ);//this will also take the entry out of the rankings
       if(answ > 9){std::cout << "Error!!       ";}
       }
-      p = ranker(lev);//gets coordinates of easiest entry
-    }
-    lev.printout();
-      return 0;
+
+      //recursive area
+      int *p;
+      p = ranker(lev);
+      if(*p != 99){// determine recursion
+          int i = *p;//x coordiante of entry
+          int j = *(p+1); //  y coordinate of entry
+          solve(i, j, lev);
+          p = ranker(lev);//gets coordinates of easiest entry
+      }
 }
 
-//FUNCTION RANKER
+//RANKER function
 int* ranker(sudoku_one::board& lev){
   lev.clearrank();
   //RANK
