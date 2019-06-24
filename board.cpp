@@ -76,7 +76,14 @@ namespace sudoku_one{
           }
         }
       }
-
+    void board::reset(){
+      for(int i = 0; i < 9; i++){
+          for(int j = 0; j < 9; j++){
+               matrix[i][j] = init[i][j];
+           }
+       }
+       board::clearrank();
+    }
     int board::read(int x, int y){
       return matrix[x][y];
     }

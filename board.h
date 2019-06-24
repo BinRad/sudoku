@@ -21,6 +21,7 @@ namespace sudoku_one {
         void modrank(int x, int y, int entry);
         void const printout(int m = 0);
         void clearrank();			          // prints whatvever is in the board
+        void reset();
         int read(int x, int y);
         int readrank(int x, int y);
     private:

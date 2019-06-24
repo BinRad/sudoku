@@ -4,7 +4,7 @@
 #include <iostream>
 #include "board.h"
 //prototyping
-int solve(sudoku_one::board &lev, int count = 1);
+void solve(sudoku_one::board &lev, int count = 1);
 int finder(int i, int j, sudoku_one::board &lev, int count = 1);
 int* ranker(sudoku_one::board& lev);
 
@@ -24,58 +24,97 @@ int main(){
       }
     }
     std::cout << "Finished the for loop \n";
+    lev.printout();
       solve(lev);
       lev.printout();
 return 0;
 }
 
 //SOLVE function
-int solve(sudoku_one::board &lev, int count){
+void solve(sudoku_one::board &lev, int count){
       // if valid answer then put it in and move to the nextif not valid
       //answer then undo all answers up until then and increment up
       int i, j;
       int *p;
       p = ranker(lev);
       if(*p == 99){
-        return 1;
+        lev.printout();
+        return;
       }
       else{
-          if(count > 8){
-            return 2;
-          }
-          else{
             i = *p;//x coordiante of entry
             j = *(p+1); //  y coordinate of entry
             count = finder(i,j,lev, count);
+            if(count == 0){
+              std::cout << "i,j: " << i << "," << j  << std::endl;
+              std::cout << " count: " << count << std::endl;
+              lev.reset();
+              p = ranker(lev);
+              i = *p;//x coordiante of entry
+              j = *(p+1); //  y coordinate of entry
+              count = finder(i,j,lev, finder(i,j,lev) + 1);
+              std::cout << "i,j: " << i << "," << j  << std::endl;
+              std::cout << " count: " << count << std::endl;
+              if(finder(i,j,lev, count + 1) == 0){
+                lev.mod_ini(i,j, count);
+                std::cout << "yoohoo" << std::endl;
+              }
+              std::cout << "after mod ini" << std::endl;
+              if(count == 0){
+                std::cout << "yooh123oo" << std::endl;
+                lev.reset();
+                p = ranker(lev);
+                i = *p;//x coordiante of entry
+                j = *(p+1); //  y coordinate of entry
+                count = finder(i,j,lev, finder(i,j,lev) + 1);
+                if(finder(i,j,lev, count + 1) == 0){
+                  lev.mod_ini(i,j, count);
+                }
+                else{
+                  if(count == 0){
+                    lev.reset();
+                    p = ranker(lev);
+                    i = *p;//x coordiante of entry
+                    j = *(p+1); //  y coordinate of entry
+                    count = finder(i,j,lev, finder(i,j,lev) + 2);
+                  }
+                }
+              }
+              std::cout << "after if count ==0" << std::endl;
+            }
             lev.mod(i, j, count);
-            
-
+            solve(lev);
           }
-      }
-      }
       std::cout << "i,j: " << i << "," << j  << std::endl;
       std::cout << " count: " << count << std::endl;
 }
 
 //FINDER function
 int finder(int i, int j, sudoku_one::board &lev, int count){
-    for(int k = 0; k < 9; k++){
-      std::cout << "k: " << k << "    count: " << count << "\n";
-        if(lev.read(i,k) == count){
-            count++;
-        }
-        if(lev.read(k,j) == count){
+  for(int k = 0; k < 9; k++){
+      if(lev.read(i,k) == count){
           count++;
-        }
-        if(k < 3){
-          for(int z = 0; z < 3; z++){
-              if(lev.read(k, j) == count){
-                count++;
-              }
+          k = 0;
+      }
+      if(lev.read(k,j) == count){
+          count++;
+          k = 0;
+      }
+      if(k < 3){
+        for(int z = 0; z < 3; z++){
+          if(lev.read(k, j) == count){
+            count++;
+              k = 0;
           }
         }
       }
-      return count;
+  }
+      if(count > 9){
+        return 0;
+      }
+      else{
+        return count;
+      }
 }
 
 //RANKER function
