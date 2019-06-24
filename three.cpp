@@ -4,7 +4,8 @@
 #include <iostream>
 #include "board.h"
 //prototyping
-void solve(int i, int j, sudoku_one::board &lev);
+int solve(sudoku_one::board &lev, int count = 1);
+int finder(int i, int j, sudoku_one::board &lev, int count = 1);
 int* ranker(sudoku_one::board& lev);
 
 //MAIN function
@@ -23,57 +24,58 @@ int main(){
       }
     }
     std::cout << "Finished the for loop \n";
-    int *p;
-    p = ranker(lev);
-        int i = *p;//x coordiante of entry
-        int j = *(p+1); //  y coordinate of entry
-        solve(i, j, lev);
+      solve(lev);
       lev.printout();
 return 0;
 }
 
 //SOLVE function
-void solve(int i, int j, sudoku_one::board &lev){
-//copied from ONE.CPP
-      int answ = 1;
-      //default entry when not specified is 1
-      if(lev.read(i,j) == 0){
-          for(int k = 0; k < 9; k++){
-              //this goes throught the row and column of each
-              //entry and incrments if # is already in column
-              // then set k = 0 so that it can check all the
-              //entrys against the new answer
-              if(lev.read(i,k) == answ){
-                  answ++;
-                  k = 0;
-                  std::cout << lev.read(i,k) << "==? " << answ-1 << "\n";
-              }
-              if(lev.read(k,j) == answ){
-                  answ++;
-                  k = 0;
-              }
-              if(k < 3){
-                for(int z = 0; z < 3; z++){
-                  if(lev.read(k, j) == answ){
-                      answ++;
-                      k = 0;
-                  }
-                }
-              }
-          }
-      lev.mod(i,j, answ);//this will also take the entry out of the rankings
-      if(answ > 9){std::cout << "Error!!       ";}
-      }
-
-      //recursive area
+int solve(sudoku_one::board &lev, int count){
+      // if valid answer then put it in and move to the nextif not valid
+      //answer then undo all answers up until then and increment up
+      int i, j;
       int *p;
       p = ranker(lev);
-      if(*p != 99){// determine recursion
-          int i = *p;//x coordiante of entry
-          int j = *(p+1); //  y coordinate of entry
-          solve(i, j, lev);
-          p = ranker(lev);//gets coordinates of easiest entry
+      if(*p == 99){
+        return 1;
       }
+      else{
+          if(count > 8){
+            return 2;
+          }
+          else{
+            i = *p;//x coordiante of entry
+            j = *(p+1); //  y coordinate of entry
+            count = finder(i,j,lev, count);
+            lev.mod(i, j, count);
+            
+
+          }
+      }
+      }
+      std::cout << "i,j: " << i << "," << j  << std::endl;
+      std::cout << " count: " << count << std::endl;
+}
+
+//FINDER function
+int finder(int i, int j, sudoku_one::board &lev, int count){
+    for(int k = 0; k < 9; k++){
+      std::cout << "k: " << k << "    count: " << count << "\n";
+        if(lev.read(i,k) == count){
+            count++;
+        }
+        if(lev.read(k,j) == count){
+          count++;
+        }
+        if(k < 3){
+          for(int z = 0; z < 3; z++){
+              if(lev.read(k, j) == count){
+                count++;
+              }
+          }
+        }
+      }
+      return count;
 }
 
 //RANKER function
