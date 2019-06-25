@@ -52,7 +52,7 @@ namespace sudoku_one{
           }
         }
           std::cout << std::endl;
-          if(m == 0 || m == 3){
+          if(m == 3){
           std::cout << "\n rank:";
           for(int i = 0; i < 9; i++){
               std::cout << std::endl;

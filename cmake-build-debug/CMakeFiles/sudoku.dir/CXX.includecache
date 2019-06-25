@@ -1,0 +1,24 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/binrad/Documents/sudoku/board.cpp
+board.h
+/home/binrad/Documents/sudoku/board.h
+iostream
+-
+
+/home/binrad/Documents/sudoku/board.h
+
+/home/binrad/Documents/sudoku/three.cpp
+iostream
+-
+board.h
+/home/binrad/Documents/sudoku/board.h
+board.cpp
+/home/binrad/Documents/sudoku/board.cpp
+

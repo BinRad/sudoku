@@ -86,7 +86,7 @@
 				</MakeCommands>
 			</Target>
 		</Build>
-		<Unit filename="/home/binrad/Documents/sudoku/one.cpp">
+		<Unit filename="/home/binrad/Documents/sudoku/three.cpp">
 			<Option target="sudoku"/>
 		</Unit>
 		<Unit filename="/home/binrad/Documents/sudoku/CMakeLists.txt">

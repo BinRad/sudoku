@@ -53,7 +53,7 @@ int main(){
               }
               if(k < 3){
                 for(int z = 0; z < 3; z++){
-                  if(lev.read(k, j) == answ){
+                  if(lev.read(k, z) == answ){
                       answ++;
                       k = 0;
                   }

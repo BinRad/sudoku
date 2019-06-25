@@ -57,27 +57,27 @@ include CMakeFiles/sudoku.dir/progress.make
 # Include the compile flags for this target's objects.
 include CMakeFiles/sudoku.dir/flags.make
 
-CMakeFiles/sudoku.dir/one.cpp.o: CMakeFiles/sudoku.dir/flags.make
-CMakeFiles/sudoku.dir/one.cpp.o: ../one.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/binrad/Documents/sudoku/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/sudoku.dir/one.cpp.o"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/sudoku.dir/one.cpp.o -c /home/binrad/Documents/sudoku/one.cpp
+CMakeFiles/sudoku.dir/three.cpp.o: CMakeFiles/sudoku.dir/flags.make
+CMakeFiles/sudoku.dir/three.cpp.o: ../three.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/binrad/Documents/sudoku/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/sudoku.dir/three.cpp.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/sudoku.dir/three.cpp.o -c /home/binrad/Documents/sudoku/three.cpp
 
-CMakeFiles/sudoku.dir/one.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/sudoku.dir/one.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/binrad/Documents/sudoku/one.cpp > CMakeFiles/sudoku.dir/one.cpp.i
+CMakeFiles/sudoku.dir/three.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/sudoku.dir/three.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/binrad/Documents/sudoku/three.cpp > CMakeFiles/sudoku.dir/three.cpp.i
 
-CMakeFiles/sudoku.dir/one.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/sudoku.dir/one.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/binrad/Documents/sudoku/one.cpp -o CMakeFiles/sudoku.dir/one.cpp.s
+CMakeFiles/sudoku.dir/three.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/sudoku.dir/three.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/binrad/Documents/sudoku/three.cpp -o CMakeFiles/sudoku.dir/three.cpp.s
 
 # Object files for target sudoku
 sudoku_OBJECTS = \
-"CMakeFiles/sudoku.dir/one.cpp.o"
+"CMakeFiles/sudoku.dir/three.cpp.o"
 
 # External object files for target sudoku
 sudoku_EXTERNAL_OBJECTS =
 
-sudoku: CMakeFiles/sudoku.dir/one.cpp.o
+sudoku: CMakeFiles/sudoku.dir/three.cpp.o
 sudoku: CMakeFiles/sudoku.dir/build.make
 sudoku: CMakeFiles/sudoku.dir/link.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/binrad/Documents/sudoku/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Linking CXX executable sudoku"
