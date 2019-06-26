@@ -68,6 +68,28 @@ namespace sudoku_one{
             }
             std::cout << "\n";
     }
+    if(m == 4){
+    std::cout << "\n Difference:";
+    for(int i = 0; i < 9; i++){
+        std::cout << std::endl;
+        if( i == 3 || i==6){
+          std::cout << std::endl;
+        }
+        for(int j = 0; j < 9; j++){
+          if(init[i][j] == matrix[i][j]){
+            std::cout << "  ";
+          }
+          else{
+            std::cout << matrix[i][j] << " ";
+          }
+
+            if(j == 2 || j == 5){
+              std::cout << "  ";
+            }
+        }
+      }
+    }
+      std::cout << std::endl;
   }
     void board::clearrank(){
       for(int i = 0; i < 9; i++){
@@ -84,10 +106,10 @@ namespace sudoku_one{
        }
        board::clearrank();
     }
-    int board::read(int x, int y){
+    int const board::read(int x, int y){
       return matrix[x][y];
     }
-    int board::readrank(int x, int y){
+    int const board::readrank(int x, int y){
       return rank[x][y];
     }
 }

@@ -29,7 +29,7 @@ int main(){
   int *p;
   p = ranker(lev);
     while(*p != 99){
-      std::cout << *p;
+      //std::cout << *p;
       //<< "," << *(p+1) << "";
       int i = *p;//x coordiante of entry
       int j = *(p+1); //  y coordinate of entry
@@ -45,20 +45,110 @@ int main(){
               if(lev.read(i,k) == answ){
                   answ++;
                   k = 0;
-                  std::cout << lev.read(i,k) << "==? " << answ-1 << "\n";
+                  //std::cout << lev.read(i,k) << "==? " << answ-1 << "\n";
               }
               if(lev.read(k,j) == answ){
                   answ++;
                   k = 0;
               }
-              if(k < 3){
-                for(int z = 0; z < 3; z++){
-                  if(lev.read(k, z) == answ){
-                      answ++;
-                      k = 0;
-                  }
-                }
-              }
+              if (k < 3) {
+                  if (i < 3) { //Section 1
+                      if (j < 3) {// section 1,1
+                          for (int a = 0; a < 3; a++) {
+                              //std::cout << k << "," << a <<std::endl;
+                              if (lev.read(k, a) == answ) {
+                                  answ++;
+                                  k = 0;
+                                  a = 0;
+                              }
+                          }
+                      }
+                      if (j > 2 && j < 6) {//section 1,2
+                          for (int a = 3; a < 6; a++) {
+                              //std::cout << k << "," << a <<std::endl;
+                              if (lev.read(k, a) == answ) {
+                                  answ++;
+                                  k = 0;
+                                  a = 3;
+                              }
+                          }
+                      }
+                      if (j > 5 && j < 9) {//section 1,3
+                          for (int a = 6; a < 9; a++) {
+                              //std::cout << k << "," << a <<std::endl;
+                              if (lev.read(k, a) == answ) {
+                                  answ++;
+                                  k = 0;
+                                  a = 6;
+                              }
+                          }
+                      }
+                  }//end section 1,k
+                  if (i > 2 && i < 6) {//section 2, k
+                      if (j < 3) {// section 2,1
+                          for (int a = 0; a < 3; a++) {
+                              //std::cout << k + 3 << "," << a <<std::endl;
+                              if (lev.read(k + 3, a) == answ) {
+                                  answ++;
+                                  k = 0;
+                                  a = 0;
+                              }
+                          }
+                      }
+                      if (j > 2 && j < 6) {//section 2,2
+                          for (int a = 3; a < 6; a++) {
+                              //std::cout << k + 3 << "," << a <<std::endl;
+                              if (lev.read(k + 3, a) == answ) {
+                                  answ++;
+                                  k = 0;
+                                  a = 3;
+                              }
+                          }
+                      }
+                      if (j > 5 && j < 9) {//section 2,3
+                          for (int a = 6; a < 9; a++){
+                              //std::cout << k + 3 << "," << a <<std::endl;
+                              if (lev.read(k + 3, a) == answ) {
+                                  answ++;
+                                  k = 0;
+                                  a = 6;
+                              }
+                          }
+                      }
+                  }//end section 2,k
+                  if (i > 5 && i < 9) {//section 3,k
+                      if (j < 3) {// section 3,1
+                          for (int a = 0; a < 3; a++) {
+                              //std::cout << k + 6 << "," << a <<std::endl;
+                              if (lev.read(k + 6, a) == answ) {
+                                  answ++;
+                                  k = 0;
+                                  a = 0;
+                              }
+                          }
+                      }
+                      if (j > 2 && j < 6) {//section 3,2
+                          for (int a = 3; a < 6; a++) {
+                              //std::cout << k + 6 << "," << a <<std::endl;
+                              if (lev.read(k + 6, a) == answ) {
+                                  answ++;
+                                  k = 0;
+                                  a = 3;
+                              }
+                          }
+                      }
+                      if (j > 5 && j < 9) {//section 3,3
+                          for (int a = 6; a < 9; a++) {
+                              //std::cout << k + 6 << "," << a <<std::endl;
+                              if (lev.read(k + 6, a) == answ) {
+                                  answ++;
+                                  k = 0;
+                                  a = 6;
+                              }
+                          }
+                      }
+                  }//end section 3,k
+              }// end section checker
           }
       lev.mod(i,j, answ);//this will also take the entry out of the rankings
       if(answ > 9){std::cout << "Error!!       ";}
@@ -167,3 +257,4 @@ int* ranker(sudoku_one::board& lev){
     int *p = soln;
     return p;
 }
+#include "board.cpp"

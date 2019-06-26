@@ -3,5 +3,7 @@
 
 CMakeFiles/sudoku.dir/three.cpp.o: ../board.cpp
 CMakeFiles/sudoku.dir/three.cpp.o: ../board.h
+CMakeFiles/sudoku.dir/three.cpp.o: ../rank.cpp
+CMakeFiles/sudoku.dir/three.cpp.o: ../rank.h
 CMakeFiles/sudoku.dir/three.cpp.o: ../three.cpp
 

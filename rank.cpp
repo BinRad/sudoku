@@ -1,8 +1,10 @@
 #include "rank.h"
 #include "board.h"
+#include <iostream>
 
 namespace sudoku_one {
     rank::rank(sudoku_one::board lev) {
+        current = 0;
         int counter = 0;
         while (counter < 81) {
             lev.clearrank();
@@ -81,47 +83,47 @@ namespace sudoku_one {
             int i = 0;
             int j = 0;
             int temp = 0;
-            for (i = 0; i < 9; i++) { //rows
-                for (j = 0; j < 9; j++) { //columns
-                    if (lev.readrank(i, j) > temp) {
-                        rows[counter] = i;
-                        cols[counter] = j;
+            for (int a = 0; a < 9; a++) { //rows
+                for (int b = 0; b < 9; b++) { //columns
+                    if (lev.readrank(a, b) > temp) {
+                        i = a;
+                        j = b;
                         temp = lev.readrank(i, j);
                     }
                 }
             }
-            lev.mod(i, j, 1);
+            std::cout << "i,j: " << i<< ","<< j << std::endl;
+            rows[counter] = i;
+            cols[counter] = j;
+            lev.mod_ini(i, j, 5);
             counter++;
             //end while
         }
         //end constructor
     }
-
-    void rank::crossoff() {
+    void rank::advance() {
         current++;
     }
-
-    int rank::getrow() {
+    int const rank::getrow() {
         return rows[current];
     }
-
-    int rank::getcol() {
+    int const rank::getcol() {
         return cols[current];
     }
-
-    int rank::getindex(int x, int y) {
+    int const rank::getindex(int x, int y) {
         for (int w = 0; w > 81; w++) {
             if (x == rows[w] && y == cols[w]) {
                 return w;
             }
         }
     }
-
-    int rank::getrow(int index) {
+    int const rank::getrow(int index) {
         return rows[index];
     }
-
-    int rank::getcol(int index) {
+    int const rank::getcol(int index) {
         return cols[index];
+    }
+    int const rank::getcurrent(){
+        return current;
     }
 }

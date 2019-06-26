@@ -14,11 +14,25 @@ iostream
 
 /home/binrad/Documents/sudoku/board.h
 
+/home/binrad/Documents/sudoku/rank.cpp
+rank.h
+/home/binrad/Documents/sudoku/rank.h
+board.h
+/home/binrad/Documents/sudoku/board.h
+iostream
+-
+
+/home/binrad/Documents/sudoku/rank.h
+
 /home/binrad/Documents/sudoku/three.cpp
 iostream
 -
 board.h
 /home/binrad/Documents/sudoku/board.h
+rank.h
+/home/binrad/Documents/sudoku/rank.h
 board.cpp
 /home/binrad/Documents/sudoku/board.cpp
+rank.cpp
+/home/binrad/Documents/sudoku/rank.cpp
 

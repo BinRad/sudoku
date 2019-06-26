@@ -4,4 +4,6 @@
 CMakeFiles/sudoku.dir/three.cpp.o
  /home/binrad/Documents/sudoku/board.cpp
  /home/binrad/Documents/sudoku/board.h
+ /home/binrad/Documents/sudoku/rank.cpp
+ /home/binrad/Documents/sudoku/rank.h
  /home/binrad/Documents/sudoku/three.cpp
