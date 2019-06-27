@@ -6,8 +6,9 @@
 #include "rank.h"
 
 //prototyping
-void solve(sudoku_one::board &lev, sudoku_one::rank &simu, int count = 0);
+bool solve(sudoku_one::board &lev, sudoku_one::rank &sim, int count = 0);
 int finder(int i, int j, sudoku_one::board &lev, int entry = 1);
+sudoku_one::board correct(sudoku_one::board &lev, sudoku_one::rank &sim,  int csoln,  int cposs);
 //int *ranker(sudoku_one::board &lev);
 
 //MAIN function
@@ -34,29 +35,17 @@ int main() {
 }
 
 //SOLVE function
-void solve(sudoku_one::board &lev, sudoku_one::rank &sim, int count) {
+bool solve(sudoku_one::board &lev, sudoku_one::rank &sim, int count) {
     int i, j;
     int entry = 0;
     i = sim.getrow();
     j = sim.getcol();
         sim.advance();
     entry = finder(i, j, lev);
-    //lev.printout(4);
-    //base case
-    while (entry == 0) {
-        lev.reset();
-        if (finder(sim.getrow(count), sim.getcol(count), lev, finder(sim.getrow(count), sim.getcol(count), lev) + 1) !=
-            0) {
-            entry = finder(sim.getrow(count), sim.getcol(count), lev,
-                           finder(sim.getrow(count), sim.getcol(count), lev) + 1);
-            //std::cout << "entry from finder after reset: " << entry << std::endl;
-            lev.mod(i, j, entry);
-        } else {
-            count++;
-            solve(lev, sim, count);
-        }
+    if(entry == 0){ //try a different possibility
+        next_board(lev, sim, current);
+        return false;
     }
-    //recursive
     lev.mod(i, j, entry);
     count++;
     if (count > 81) {
@@ -183,14 +172,67 @@ int finder(int i, int j, sudoku_one::board &lev, int entry) {
         }// end section checker
     }//end k
     if (entry > 9) {
-        //std::cout << "i,j: " << i << "," << j << std::endl;
-        //std::cout << "entry: " << entry << std::endl;
-        //lev.printout(4);
-        //lev.printout();
         return 0;
     } else {
         return entry;
     }
+}
+
+sudoku_one::board correct(sudoku_one::board& lev, sudoku_one::rank &sim, int num,  int ans){
+  lev.reset();
+  int poss[81][9];
+  for(int a = 0; a <81; a++){
+    for(int b = 0; b <9; b++){
+      i = sim.getrow(a);
+      j = sim.getcol(a);
+      poss[b] = finder(i,j, lev, finder(i,j,lev)+b);
+    }
+  }
+    int soln[81];
+    for(int c = 0; c < 81; c++){
+      soln[c] = 0;
+    }
+
+    if(solve(lev, sim)){//if the board worked then return the board
+      return lev;
+    }
+      else{//if ti didnt work
+        if(poss[num][ans] != 0 ){//try the next possibility for the current
+            correct(lev, sim, num ,ans++);
+        }
+          else{
+              correct(lev, sim, csoln++,0);
+              std::assert(poss[soln[cposs]] == 0);
+          }
+      }
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      // lev.reset();
+      // count = 0;
+      // if (finder(sim.getrow(count), sim.getcol(count), lev, finder(sim.getrow(count), sim.getcol(count), lev) + 1) !=
+      //     0) {
+      //     entry = finder(sim.getrow(count), sim.getcol(count), lev,
+      //                    finder(sim.getrow(count), sim.getcol(count), lev) + 1);
+      //     //std::cout << "entry from finder after reset: " << entry << std::endl;
+      //     lev.mod(i, j, entry);
+      // }
+      // else {
+      //     count++;
+      //     solve(lev, sim, count);
+      // }
 }
 
 //RANKER function
@@ -295,6 +337,15 @@ int finder(int i, int j, sudoku_one::board &lev, int entry) {
 //     int *p = soln;
 //     return p;
 // }
+
+
+// cout tool list
+    //std::cout << "count: " << count << std::endl;
+    //std::cout << lev.read(i, k) << "==" << entry << std::endl;
+    //std::cout << "i,j: " << i << "," << j << std::endl;
+    //std::cout << "entry: " << entry << std::endl;
+    //lev.printout(4);
+    //lev.printout();
 
 #include "board.cpp"
 #include "rank.cpp"

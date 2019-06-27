@@ -13,6 +13,7 @@ namespace sudoku_one {
       rank(sudoku_one::board lev);
       ~rank(){}
       void advance();
+      void begining(){current == 0;}
       int const getrow();//the next i on the list according to order
       int const getcol();//the next j on the list
       int const getindex(int x, int y);

@@ -5,6 +5,7 @@
 namespace sudoku_one {
     rank::rank(sudoku_one::board lev) {
         current = 0;
+        correct = 0;
         int counter = 0;
         while (counter < 81) {
             lev.clearrank();
