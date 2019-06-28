@@ -1,22 +1,26 @@
+#include "poss.h"
 #include "rank.h"
 #include "board.h"
-#include "poss.h"
 #include <iostream>
+#include "assert.h"
 
 namespace sudoku_one {
-  poss(sudoku_one::board &lev, sudoku_one::rank &sim){
+  poss::poss(sudoku_one::board &lev, sudoku_one::rank &sim){
     lev.reset();
     for(int a = 0; a <81; a++){
-      for(int b = 0; b <9; b++){
-        data[a][b] = finder(a,b, lev, finder(i,j,lev)+b);
+      for(int b = 1; b < 9; b++){
+        data[a][b] = finder(a,b, lev, finder(a,b,lev)+b -1);
+        std::cout << data[a][b] << std::endl;
       }
+      data[a][0] = 0;
       num[a] = 0;
     }
+    sim.advance();
   }
-  ~poss(){}
-  int finder(int i, int j, sudoku_one::board &lev, int entry){
+  poss::~poss(){}
+  int poss::finder(int i, int j, sudoku_one::board &lev, int entry){
     if(lev.read(i,j) != 0){
-      return lev.read(i,j);
+      return 0;
     }
     for (int k = 0; k < 9; k++) {
         //std::cout <<entry<< "      ";
@@ -131,22 +135,26 @@ namespace sudoku_one {
             }//end section 3,k
         }// end section checker
     }//end k
-    if (entry > 9) {
+    if (entry > 9 || entry < 0) {
         return 0;
     } else {
         return entry;
     }
   }
-  sudoku_one::board next(sudoku_one::board& lev, sudoku_one::rank &sim){
-    if(data[ans][num[ans] + 1] != 0 ){//try the next possibility for the current
+//  bool poss::checker(i ,j,  )
+  void poss::next(sudoku_one::board& lev, sudoku_one::rank &sim){
+    if(data[ans][num[ans] + 1] != 0){//try the next possibility for the current
         num[ans]++;
     }
       else{
           ans++;
+          sim.advance();
+          assert(ans < 81);
       }
       for(int a = 0; a <81; a++){
-          lev.mod(a/9, a%9, num[a]);
+        if(data[a][num[a]]!=0){
+          lev.mod(a/9, a%9, data[a][num[a]]);
       }
-      return lev;
+    }
   }
 }

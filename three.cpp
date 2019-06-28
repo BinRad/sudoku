@@ -4,11 +4,11 @@
 #include <iostream>
 #include "board.h"
 #include "rank.h"
+#include "poss.h"
 
 //prototyping
-bool solve(sudoku_one::board &lev, sudoku_one::rank &sim, int count = 0);
+bool solve(sudoku_one::board &lev, sudoku_one::rank &sim, sudoku_one::poss& tahor, int count = 0);
 int finder(int i, int j, sudoku_one::board &lev, int entry = 1);
-sudoku_one::board correct(sudoku_one::board &lev, sudoku_one::rank &sim,  int csoln,  int cposs);
 //int *ranker(sudoku_one::board &lev);
 
 //MAIN function
@@ -28,14 +28,15 @@ int main() {
     }
     std::cout << "Finished the for loop \n";
     sudoku_one::rank sim(lev);
-    solve(lev, sim);
+    sudoku_one::poss tahor(lev, sim);
+    solve(lev, sim, tahor);
     lev.printout();
     lev.printout(4);
     return 0;
 }
 
 //SOLVE function
-bool solve(sudoku_one::board &lev, sudoku_one::rank &sim, int count) {
+bool solve(sudoku_one::board &lev, sudoku_one::rank &sim, sudoku_one::poss& tahor, int count) {
     int i, j;
     int entry = 0;
     i = sim.getrow();
@@ -43,17 +44,19 @@ bool solve(sudoku_one::board &lev, sudoku_one::rank &sim, int count) {
         sim.advance();
     entry = finder(i, j, lev);
     if(entry == 0){ //try a different possibility
-        next_board(lev, sim, current);
-        return false;
+        tahor.next(lev, sim);
+        solve(lev, sim, tahor, count);
     }
+    else{
     lev.mod(i, j, entry);
     count++;
     if (count > 81) {
-        return;
+        return true;
     }
     //std::cout << "count: " << count << std::endl;
-    solve(lev, sim, count);
+    solve(lev, sim,tahor, count);
     //lev.printout(4);
+  }
 }
 
 //FINDER function
@@ -178,34 +181,6 @@ int finder(int i, int j, sudoku_one::board &lev, int entry) {
     }
 }
 
-sudoku_one::board correct(sudoku_one::board& lev, sudoku_one::rank &sim, int num,  int ans){
-  lev.reset();
-  int poss[81][9];
-  for(int a = 0; a <81; a++){
-    for(int b = 0; b <9; b++){
-      i = sim.getrow(a);
-      j = sim.getcol(a);
-      poss[b] = finder(i,j, lev, finder(i,j,lev)+b);
-    }
-  }
-    int soln[81];
-    for(int c = 0; c < 81; c++){
-      soln[c] = 0;
-    }
-
-    if(solve(lev, sim)){//if the board worked then return the board
-      return lev;
-    }
-      else{//if ti didnt work
-        if(poss[num][ans] != 0 ){//try the next possibility for the current
-            correct(lev, sim, num ,ans++);
-        }
-          else{
-              correct(lev, sim, csoln++,0);
-              std::assert(poss[soln[cposs]] == 0);
-          }
-      }
-    }
 
 
 
@@ -233,7 +208,7 @@ sudoku_one::board correct(sudoku_one::board& lev, sudoku_one::rank &sim, int num
       //     count++;
       //     solve(lev, sim, count);
       // }
-}
+//}
 
 //RANKER function
 //int *p;
@@ -349,3 +324,4 @@ sudoku_one::board correct(sudoku_one::board& lev, sudoku_one::rank &sim, int num
 
 #include "board.cpp"
 #include "rank.cpp"
+#include "poss.cpp"

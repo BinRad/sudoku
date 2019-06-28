@@ -5,7 +5,6 @@
 namespace sudoku_one {
     rank::rank(sudoku_one::board lev) {
         current = 0;
-        correct = 0;
         int counter = 0;
         while (counter < 81) {
             lev.clearrank();
@@ -93,7 +92,7 @@ namespace sudoku_one {
                     }
                 }
             }
-            std::cout << "i,j: " << i<< ","<< j << std::endl;
+            //std::cout << "i,j: " << i<< ","<< j << std::endl;
             rows[counter] = i;
             cols[counter] = j;
             lev.mod_ini(i, j, 5);
