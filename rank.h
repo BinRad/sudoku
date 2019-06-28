@@ -12,18 +12,17 @@ namespace sudoku_one {
     public:
       rank(sudoku_one::board lev);
       ~rank(){}
-      void advance();
-      void begining(){current == 0;}
-      int const getrow();//the next i on the list according to order
-      int const getcol();//the next j on the list
+      bool advance();
+      void beginning(){current == 0;}
       int const getindex(int x, int y);
-      int const getrow(int index);//give index get i value
-      int const getcol(int index);//gve index get j value
+      int const getrow(int index = 99);//give index get i value
+      int const getcol(int index = 99);//gve index get j value
       int const getcurrent();
     private:
       int rows[81];
       int cols[81];
       int current;
+      int tail;
     };
   }
 #endif

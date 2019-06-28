@@ -7,7 +7,7 @@
 #include "poss.h"
 
 //prototyping
-bool solve(sudoku_one::board &lev, sudoku_one::rank &sim, sudoku_one::poss& tahor, int count = 0);
+bool solve(sudoku_one::board &lev, sudoku_one::rank &sim, sudoku_one::poss& tahor, int index = 99,int entry = 1);
 int finder(int i, int j, sudoku_one::board &lev, int entry = 1);
 //int *ranker(sudoku_one::board &lev);
 
@@ -36,28 +36,48 @@ int main() {
 }
 
 //SOLVE function
-bool solve(sudoku_one::board &lev, sudoku_one::rank &sim, sudoku_one::poss& tahor, int count) {
+bool solve(sudoku_one::board &lev, sudoku_one::rank &sim, sudoku_one::poss& tahor,int index,int entry) {
     int i, j;
-    int entry = 0;
-    i = sim.getrow();
-    j = sim.getcol();
-        sim.advance();
-    entry = finder(i, j, lev);
+    i = sim.getrow(index);
+    j = sim.getcol(index);
+    tahor.set_old(i,j);
+    if(tahor.anti_loop(i,j == true)){
+      if(sim.advance()){
+      return solve(lev, sim,tahor);
+    }
+      else{
+        std::cout << "count: " << index << std::endl;
+        std::cout << lev.read(i, j) <<std::endl;
+        std::cout << "i,j: " << i << "," << j << std::endl;
+        std::cout << "entry: " << entry<< std::endl;
+        lev.printout(4);
+        lev.printout();
+      }
+    }
+    if(lev.read(i,j) != 0){
+      sim.advance();
+      return true;
+    }
+    entry = tahor.finder(i, j, lev, entry);
     if(entry == 0){ //try a different possibility
-        tahor.next(lev, sim);
-        solve(lev, sim, tahor, count);
+          std::cout << "i,j: " << i << "," << j << std::endl;
+        index = tahor.next_prob(sim);
+        entry = lev.read(sim.getrow(index),sim.getcol(index));
+        if(entry == lev.read(0,0)){
+          tahor.finder(i, j, lev, entry);
+        }
+        sim.beginning();
+        lev.reset();
+        return solve(lev, sim, tahor, index, entry);
+    }else{
+
+      lev.mod(i, j, entry);
+      sim.advance();
+      //std::cout << "count: " << count << std::endl;
+      return solve(lev, sim,tahor);
+      //lev.printout(4);
     }
-    else{
-    lev.mod(i, j, entry);
-    count++;
-    if (count > 81) {
-        return true;
-    }
-    //std::cout << "count: " << count << std::endl;
-    solve(lev, sim,tahor, count);
-    //lev.printout(4);
   }
-}
 
 //FINDER function
 int finder(int i, int j, sudoku_one::board &lev, int entry) {

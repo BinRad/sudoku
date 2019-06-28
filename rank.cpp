@@ -92,36 +92,62 @@ namespace sudoku_one {
                     }
                 }
             }
-            //std::cout << "i,j: " << i<< ","<< j << std::endl;
+            std::cout << "i,j: " << i<< ","<< j << std::endl;
             rows[counter] = i;
             cols[counter] = j;
             lev.mod_ini(i, j, 5);
             counter++;
             //end while
         }
+        bool temp = false;
+        for(int a = 0; a < 81; a++){
+          if(rows[a] == 0 && cols[a] == 0){
+            if(temp ==true){
+              tail = a;
+              std::cout<< rows[a]<< " here it is " <<cols[a]<<a  <<std::endl;
+              a = 150;
+            }
+            temp = true;
+          }
+        }
         //end constructor
     }
-    void rank::advance() {
+    bool rank::advance() {
+      if(current >= tail){
+        current = 0;
+        return false;
+      }
+      else{
         current++;
-    }
-    int const rank::getrow() {
-        return rows[current];
-    }
-    int const rank::getcol() {
-        return cols[current];
+        std::cout << "yass qween\n";
+        return true;
+      }
     }
     int const rank::getindex(int x, int y) {
-        for (int w = 0; w > 81; w++) {
-            if (x == rows[w] && y == cols[w]) {
-                return w;
+        int a =0;
+        for(a = 0; a < 81; a++) {
+            if (rows[a] == x && cols[a] == y) {
+              if(a > tail){
+                return 0;
+              }
+                return a;
             }
         }
+
     }
     int const rank::getrow(int index) {
+      if(index = 99){
+          return rows[current];
+      }else{
         return rows[index];
+      }
     }
     int const rank::getcol(int index) {
+      if(index = 99){
+          return cols[current];
+      }else{
         return cols[index];
+      }
     }
     int const rank::getcurrent(){
         return current;

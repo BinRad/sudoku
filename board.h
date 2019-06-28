@@ -23,6 +23,7 @@ namespace sudoku_one {
         void clearrank();			          // prints whatvever is in the board
         void reset();
         int const read(int x, int y);
+        int const read_ini(int x, int y);
         int const readrank(int x, int y);
     private:
         // matrix that holds restricted data

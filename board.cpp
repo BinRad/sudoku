@@ -109,6 +109,9 @@ namespace sudoku_one{
     int const board::read(int x, int y){
       return matrix[x][y];
     }
+    int const board::read_ini(int x, int y){
+      return init[x][y];
+    }
     int const board::readrank(int x, int y){
       return rank[x][y];
     }

@@ -6,11 +6,17 @@
 
 namespace sudoku_one {
   poss::poss(sudoku_one::board &lev, sudoku_one::rank &sim){
+    for(int a =0; a < 9 ; a++){
+      for(int b =0; b < 9 ; b++){
+        loop[a][b] = 0;
+      }
+    }
     lev.reset();
+    count  = 0;
     for(int a = 0; a <81; a++){
       for(int b = 1; b < 9; b++){
         data[a][b] = finder(a,b, lev, finder(a,b,lev)+b -1);
-        std::cout << data[a][b] << std::endl;
+        //std::cout << data[a][b] << std::endl;
       }
       data[a][0] = 0;
       num[a] = 0;
@@ -19,6 +25,20 @@ namespace sudoku_one {
   }
   poss::~poss(){}
   int poss::finder(int i, int j, sudoku_one::board &lev, int entry){
+    if(i == old_i && j == old_j){
+      count++;
+    }
+    else{
+      count == 0;
+    }
+    for(int a = 0; a <81; a++){
+      children[a] = 0;
+    }
+    for(int a =0; a < 9 ; a++){
+      for(int b =0; b < 9 ; b++){
+        matrics[a][b] = 0;
+      }
+    }
     if(lev.read(i,j) != 0){
       return 0;
     }
@@ -27,11 +47,17 @@ namespace sudoku_one {
         if (lev.read(i, k) == entry) {
             //std::cout << lev.read(i, k) << "==" << entry << std::endl;
             entry++;
+            if(lev.read_ini(i,k) == 0 ){
+              matrics[i][k] = matrics[i][k]+1;
+            }
             k = 0;
         }
         if (lev.read(k, j) == entry) {
             //std::cout << lev.read(k, j) << "==" << entry << std::endl;
             entry++;
+            if(lev.read_ini(k,j) == 0 ){
+              matrics[k][j] = matrics[k][j]+1;
+            }
             k = 0;
         }
         //SECTION CHECKER
@@ -43,6 +69,9 @@ namespace sudoku_one {
                         if (lev.read(k, a) == entry) {
                             //std::cout << lev.read(k, a) << "===" << entry << std::endl;
                             entry++;
+                            if(lev.read_ini(k,a) == 0 ){
+                              matrics[k][a] = matrics[k][a]+1;
+                            }
                             k = 0;
                             a = 0;
                         }
@@ -53,8 +82,12 @@ namespace sudoku_one {
                         if (lev.read(k, a) == entry) {
                             //std::cout << lev.read(k, a) << "===" << entry << std::endl;
                             entry++;
+                            if(lev.read_ini(k,a) == 0 ){
+                              matrics[k][a] = matrics[k][a]+1;
+                            }
                             k = 0;
                             a = 3;
+
                         }
                     }
                 }
@@ -63,6 +96,9 @@ namespace sudoku_one {
                         if (lev.read(k, a) == entry) {
                             //std::cout << lev.read(k, a) << "===" << entry << std::endl;
                             entry++;
+                            if(lev.read_ini(k,a) == 0 ){
+                              matrics[k][a] = matrics[k][a]+1;
+                            }
                             k = 0;
                             a = 6;
                         }
@@ -75,6 +111,9 @@ namespace sudoku_one {
                         if (lev.read(k + 3, a) == entry) {
                             //std::cout << lev.read(k+3, a) << "===" << entry << std::endl;
                             entry++;
+                            if(lev.read_ini(k+3,a) == 0 ){
+                              matrics[k+3][a] = matrics[k+3][a]+1;
+                            }
                             k = 0;
                             a = 0;
                         }
@@ -85,6 +124,9 @@ namespace sudoku_one {
                         if (lev.read(k + 3, a) == entry) {
                             //std::cout << lev.read(k+3, a) << "===" << entry << std::endl;
                             entry++;
+                            if(lev.read_ini(k+3,a) == 0 ){
+                              matrics[k+3][a] = matrics[k+3][a]+1;
+                            }
                             k = 0;
                             a = 3;
                         }
@@ -95,6 +137,9 @@ namespace sudoku_one {
                         if (lev.read(k + 3, a) == entry) {
                             //std::cout << lev.read(k+3, a) << "===" << entry << std::endl;
                             entry++;
+                            if(lev.read_ini(k+3,a) == 0 ){
+                              matrics[k+3][a] = matrics[k+3][a]+1;
+                            }
                             k = 0;
                             a = 6;
                         }
@@ -107,6 +152,9 @@ namespace sudoku_one {
                         if (lev.read(k + 6, a) == entry) {
                             //std::cout << lev.read(k+6, a) << "===" << entry << std::endl;
                             entry++;
+                            if(lev.read_ini(k+6,a) == 0 ){
+                              matrics[k+6][a] = matrics[k+6][a]+1;
+                            }
                             k = 0;
                             a = 0;
                         }
@@ -117,6 +165,9 @@ namespace sudoku_one {
                         if (lev.read(k + 6, a) == entry) {
                             //std::cout << lev.read(k+6, a) << "===" << entry << std::endl;
                             entry++;
+                            if(lev.read_ini(k+6,a) == 0 ){
+                              matrics[k+6][a] = matrics[k+6][a]+1;
+                            }
                             k = 0;
                             a = 3;
                         }
@@ -127,6 +178,9 @@ namespace sudoku_one {
                         if (lev.read(k + 6, a) == entry) {
                             //std::cout << lev.read(k+6, a) << "===" << entry << std::endl;
                             entry++;
+                            if(lev.read_ini(k+6,a) == 0 ){
+                              matrics[k+6][a] = matrics[k+6][a]+1;
+                            }
                             k = 0;
                             a = 6;
                         }
@@ -136,12 +190,13 @@ namespace sudoku_one {
         }// end section checker
     }//end k
     if (entry > 9 || entry < 0) {
+      old_i =i;
+      old_j = j;
         return 0;
     } else {
         return entry;
     }
   }
-//  bool poss::checker(i ,j,  )
   void poss::next(sudoku_one::board& lev, sudoku_one::rank &sim){
     if(data[ans][num[ans] + 1] != 0){//try the next possibility for the current
         num[ans]++;
@@ -157,4 +212,31 @@ namespace sudoku_one {
       }
     }
   }
+  int poss::next_prob(sudoku_one::rank &sim){
+      poss::prob_helper(sim);
+      std::cout << count << " -  count::children[count]  - " << children[count] << std::endl;
+      count++;
+      return children[count];
+  }
+  void poss::prob_helper(sudoku_one::rank &sim){
+      int temp = 1;
+      for(int a =0; a < 9 ; a++){
+        for(int b =0; b < 9 ; b++){
+            if(matrics[a][b] != 0){
+              children[temp] = sim.getindex(a,b);
+              std::cout << "get index: " << sim.getindex(a,b) << std::endl;
+              temp++;
+            }
+          }
+        }
+    }
+  bool poss::anti_loop(int i, int j){
+      if(loop[i][j] == 1){
+        return true;
+      }
+      else{
+        loop[i][j] = 1;
+        return false;
+      }
+    }
 }
