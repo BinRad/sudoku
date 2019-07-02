@@ -123,32 +123,32 @@ sudoku/fast:
 	$(MAKE) -f CMakeFiles/sudoku.dir/build.make CMakeFiles/sudoku.dir/build
 .PHONY : sudoku/fast
 
-two.o: two.cpp.o
+three.o: three.cpp.o
 
-.PHONY : two.o
+.PHONY : three.o
 
 # target to build an object file
-two.cpp.o:
-	$(MAKE) -f CMakeFiles/sudoku.dir/build.make CMakeFiles/sudoku.dir/two.cpp.o
-.PHONY : two.cpp.o
+three.cpp.o:
+	$(MAKE) -f CMakeFiles/sudoku.dir/build.make CMakeFiles/sudoku.dir/three.cpp.o
+.PHONY : three.cpp.o
 
-two.i: two.cpp.i
+three.i: three.cpp.i
 
-.PHONY : two.i
+.PHONY : three.i
 
 # target to preprocess a source file
-two.cpp.i:
-	$(MAKE) -f CMakeFiles/sudoku.dir/build.make CMakeFiles/sudoku.dir/two.cpp.i
-.PHONY : two.cpp.i
+three.cpp.i:
+	$(MAKE) -f CMakeFiles/sudoku.dir/build.make CMakeFiles/sudoku.dir/three.cpp.i
+.PHONY : three.cpp.i
 
-two.s: two.cpp.s
+three.s: three.cpp.s
 
-.PHONY : two.s
+.PHONY : three.s
 
 # target to generate assembly for a file
-two.cpp.s:
-	$(MAKE) -f CMakeFiles/sudoku.dir/build.make CMakeFiles/sudoku.dir/two.cpp.s
-.PHONY : two.cpp.s
+three.cpp.s:
+	$(MAKE) -f CMakeFiles/sudoku.dir/build.make CMakeFiles/sudoku.dir/three.cpp.s
+.PHONY : three.cpp.s
 
 # Help Target
 help:
@@ -159,9 +159,9 @@ help:
 	@echo "... rebuild_cache"
 	@echo "... sudoku"
 	@echo "... edit_cache"
-	@echo "... two.o"
-	@echo "... two.i"
-	@echo "... two.s"
+	@echo "... three.o"
+	@echo "... three.i"
+	@echo "... three.s"
 .PHONY : help
 
 

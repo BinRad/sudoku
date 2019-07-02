@@ -1,5 +1,5 @@
 file(REMOVE_RECURSE
-  "CMakeFiles/sudoku.dir/two.cpp.o"
+  "CMakeFiles/sudoku.dir/three.cpp.o"
   "sudoku.pdb"
   "sudoku"
 )
