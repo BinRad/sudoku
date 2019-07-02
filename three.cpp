@@ -7,7 +7,8 @@
 #include "poss.h"
 
 //prototyping
-bool solve(sudoku_one::board &lev, sudoku_one::rank &sim, sudoku_one::poss& tahor, int index = 99,int entry = 1);
+bool solve(sudoku_one::board &lev, sudoku_one::rank &sim, sudoku_one::poss &tahor, int index = 99, int entry = 1);
+
 int finder(int i, int j, sudoku_one::board &lev, int entry = 1);
 //int *ranker(sudoku_one::board &lev);
 
@@ -36,48 +37,83 @@ int main() {
 }
 
 //SOLVE function
-bool solve(sudoku_one::board &lev, sudoku_one::rank &sim, sudoku_one::poss& tahor,int index,int entry) {
+bool solve(sudoku_one::board &lev, sudoku_one::rank &sim, sudoku_one::poss &tahor, int index, int entry) {
     int i, j;
     i = sim.getrow(index);
     j = sim.getcol(index);
-    tahor.set_old(i,j);
-    if(tahor.anti_loop(i,j == true)){
-      if(sim.advance()){
-      return solve(lev, sim,tahor);
-    }
-      else{
-        std::cout << "count: " << index << std::endl;
-        std::cout << lev.read(i, j) <<std::endl;
-        std::cout << "i,j: " << i << "," << j << std::endl;
-        std::cout << "entry: " << entry<< std::endl;
-        lev.printout(4);
-        lev.printout();
-      }
-    }
-    if(lev.read(i,j) != 0){
-      sim.advance();
+    entry = tahor.finder(i,j,lev);
+    lev.printout(4);
+    //lev.printout();
+    if(!sim.rerank(lev)){
       return true;
     }
-    entry = tahor.finder(i, j, lev, entry);
-    if(entry == 0){ //try a different possibility
-          std::cout << "i,j: " << i << "," << j << std::endl;
-        index = tahor.next_prob(sim);
-        entry = lev.read(sim.getrow(index),sim.getcol(index));
-        if(entry == lev.read(0,0)){
-          tahor.finder(i, j, lev, entry);
-        }
-        sim.beginning();
+      while(entry == 0){
+        index = tahor.next_prob(i, j, lev, sim);
+        entry = lev.read(sim.getrow(index), sim.getcol(index));
+        entry = tahor.finder(i, j, lev, entry + 1);
         lev.reset();
-        return solve(lev, sim, tahor, index, entry);
-    }else{
-
-      lev.mod(i, j, entry);
-      sim.advance();
-      //std::cout << "count: " << count << std::endl;
-      return solve(lev, sim,tahor);
-      //lev.printout(4);
-    }
+      }
+        index++;
+      lev.mod(i,j,entry);
+      solve(lev,sim,tahor, index);
   }
+
+
+
+    // lev.printout(4);
+    // if (tahor.anti_loop(i, j,lev) == true) {
+    //     if (sim.advance()) {
+    //         sim.advance();
+    //         return solve(lev, sim, tahor);
+    //     } else {
+    //         sim.beginning();
+    //         return solve(lev, sim, tahor, 0, 1);
+    //     }
+    // }
+    // if (lev.read(i, j) != 0) {
+    //     if (sim.advance()) {
+    //         return solve(lev, sim, tahor);
+    //     } else {
+    //         if (sim.rerank(lev)) {
+    //             sim.beginning();
+    //             solve(lev, sim, tahor);
+    //         } else {
+    //             return true;
+    //         }
+    //     }
+    // }
+    // entry = tahor.finder(i, j, lev, entry);
+    // if (entry == 0) { //try a different possibility
+    //     std::cout << "i,j: " << i << "," << j << std::endl;
+    //     index = tahor.next_prob(i, j, lev, sim);
+    //     if (index > 75) {
+    //         return solve(lev, sim, tahor, 0, 1);
+    //     }
+    //     else{
+    //       if(!sim.rerank(lev)){
+    //         return true;
+    //       }
+    //     }
+    //     entry = lev.read(sim.getrow(index), sim.getcol(index));
+    //     // entry = tahor.finder(i, j, lev, entry + 1);
+    //     // if (entry == 0) {
+    //          // sim.beginning();
+    //          lev.reset();
+    //     // } else {
+    //     //     lev.mod(i, j, entry);
+    //     //     sim.rerank(lev);
+    //     // }
+    //     lev.mod(i, j, entry);
+    //     sim.rerank(lev);
+    //     //lev.printout(4);
+    //     return solve(lev, sim, tahor);
+    // }
+    // else {
+    //   lev.mod(i, j, entry);
+    //   sim.advance();
+    //   return solve(lev, sim, tahor);
+    //   //lev.printout(4);
+    // }
 
 //FINDER function
 int finder(int i, int j, sudoku_one::board &lev, int entry) {
@@ -150,7 +186,7 @@ int finder(int i, int j, sudoku_one::board &lev, int entry) {
                     }
                 }
                 if (j > 5 && j < 9) {//section 2,3
-                    for (int a = 6; a < 9; a++){
+                    for (int a = 6; a < 9; a++) {
                         if (lev.read(k + 3, a) == entry) {
                             //std::cout << lev.read(k+3, a) << "===" << entry << std::endl;
                             entry++;
@@ -215,19 +251,19 @@ int finder(int i, int j, sudoku_one::board &lev, int entry) {
 
 
 
-      // lev.reset();
-      // count = 0;
-      // if (finder(sim.getrow(count), sim.getcol(count), lev, finder(sim.getrow(count), sim.getcol(count), lev) + 1) !=
-      //     0) {
-      //     entry = finder(sim.getrow(count), sim.getcol(count), lev,
-      //                    finder(sim.getrow(count), sim.getcol(count), lev) + 1);
-      //     //std::cout << "entry from finder after reset: " << entry << std::endl;
-      //     lev.mod(i, j, entry);
-      // }
-      // else {
-      //     count++;
-      //     solve(lev, sim, count);
-      // }
+// lev.reset();
+// count = 0;
+// if (finder(sim.getrow(count), sim.getcol(count), lev, finder(sim.getrow(count), sim.getcol(count), lev) + 1) !=
+//     0) {
+//     entry = finder(sim.getrow(count), sim.getcol(count), lev,
+//                    finder(sim.getrow(count), sim.getcol(count), lev) + 1);
+//     //std::cout << "entry from finder after reset: " << entry << std::endl;
+//     lev.mod(i, j, entry);
+// }
+// else {
+//     count++;
+//     solve(lev, sim, count);
+// }
 //}
 
 //RANKER function
@@ -335,12 +371,12 @@ int finder(int i, int j, sudoku_one::board &lev, int entry) {
 
 
 // cout tool list
-    //std::cout << "count: " << count << std::endl;
-    //std::cout << lev.read(i, k) << "==" << entry << std::endl;
-    //std::cout << "i,j: " << i << "," << j << std::endl;
-    //std::cout << "entry: " << entry << std::endl;
-    //lev.printout(4);
-    //lev.printout();
+//std::cout << "count: " << count << std::endl;
+//std::cout << lev.read(i, k) << "==" << entry << std::endl;
+//std::cout << "i,j: " << i << "," << j << std::endl;
+//std::cout << "entry: " << entry << std::endl;
+//lev.printout(4);
+//lev.printout();
 
 #include "board.cpp"
 #include "rank.cpp"

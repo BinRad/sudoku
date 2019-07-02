@@ -13,7 +13,8 @@ namespace sudoku_one {
       rank(sudoku_one::board lev);
       ~rank(){}
       bool advance();
-      void beginning(){current == 0;}
+      bool rerank(sudoku_one::board lev);
+      void beginning();
       int const getindex(int x, int y);
       int const getrow(int index = 99);//give index get i value
       int const getcol(int index = 99);//gve index get j value

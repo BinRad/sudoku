@@ -6,9 +6,11 @@
 
 namespace sudoku_one {
   poss::poss(sudoku_one::board &lev, sudoku_one::rank &sim){
+
     for(int a =0; a < 9 ; a++){
       for(int b =0; b < 9 ; b++){
         loop[a][b] = 0;
+        super_duper_looper[a][b] = 0;
       }
     }
     lev.reset();
@@ -20,17 +22,13 @@ namespace sudoku_one {
       }
       data[a][0] = 0;
       num[a] = 0;
+      looper_trooper[a] = 0;
     }
     sim.advance();
   }
   poss::~poss(){}
   int poss::finder(int i, int j, sudoku_one::board &lev, int entry){
-    if(i == old_i && j == old_j){
-      count++;
-    }
-    else{
-      count == 0;
-    }
+
     for(int a = 0; a <81; a++){
       children[a] = 0;
     }
@@ -73,7 +71,7 @@ namespace sudoku_one {
                               matrics[k][a] = matrics[k][a]+1;
                             }
                             k = 0;
-                            a = 0;
+                            a = -1;
                         }
                     }
                 }
@@ -86,7 +84,7 @@ namespace sudoku_one {
                               matrics[k][a] = matrics[k][a]+1;
                             }
                             k = 0;
-                            a = 3;
+                            a = 2;
 
                         }
                     }
@@ -100,7 +98,7 @@ namespace sudoku_one {
                               matrics[k][a] = matrics[k][a]+1;
                             }
                             k = 0;
-                            a = 6;
+                            a = 5;
                         }
                     }
                 }
@@ -115,7 +113,7 @@ namespace sudoku_one {
                               matrics[k+3][a] = matrics[k+3][a]+1;
                             }
                             k = 0;
-                            a = 0;
+                            a = -1;
                         }
                     }
                 }
@@ -128,7 +126,7 @@ namespace sudoku_one {
                               matrics[k+3][a] = matrics[k+3][a]+1;
                             }
                             k = 0;
-                            a = 3;
+                            a = 2;
                         }
                     }
                 }
@@ -141,7 +139,7 @@ namespace sudoku_one {
                               matrics[k+3][a] = matrics[k+3][a]+1;
                             }
                             k = 0;
-                            a = 6;
+                            a = 5;
                         }
                     }
                 }
@@ -156,7 +154,7 @@ namespace sudoku_one {
                               matrics[k+6][a] = matrics[k+6][a]+1;
                             }
                             k = 0;
-                            a = 0;
+                            a = -1;
                         }
                     }
                 }
@@ -169,7 +167,7 @@ namespace sudoku_one {
                               matrics[k+6][a] = matrics[k+6][a]+1;
                             }
                             k = 0;
-                            a = 3;
+                            a = 2;
                         }
                     }
                 }
@@ -182,7 +180,7 @@ namespace sudoku_one {
                               matrics[k+6][a] = matrics[k+6][a]+1;
                             }
                             k = 0;
-                            a = 6;
+                            a = 5;
                         }
                     }
                 }
@@ -212,30 +210,55 @@ namespace sudoku_one {
       }
     }
   }
-  int poss::next_prob(sudoku_one::rank &sim){
-      poss::prob_helper(sim);
-      std::cout << count << " -  count::children[count]  - " << children[count] << std::endl;
-      count++;
-      return children[count];
-  }
-  void poss::prob_helper(sudoku_one::rank &sim){
+
+  int poss::next_prob(int i, int j,sudoku_one::board &lev,sudoku_one::rank &sim){
+      super_duper_looper[i][j]++;
+      poss::prob_helper(i,j,lev,sim);
+      count = super_duper_looper[i][j] - 1;
+      if(super_duper_looper[i][j] > 5){
+        count = 0;
+        super_duper_looper[i][j] = 0;
+      }else{
+      if(looper_trooper[children[count]] > 40){
+        int temp = lev.read(sim.getrow(children[count]), sim.getcol(children[count]));
+        lev.mod(sim.getrow(children[count]), sim.getcol(children[count]), lev.read(i,j));
+        lev.mod(i,j,temp);
+        count = 0;
+        super_duper_looper[i][j] = 0;
+        looper_trooper[children[count]] = 0;
+        std::cout <<"womp";
+        return 0;
+      }
+    }
+        looper_trooper[children[count]]++;
+        return children[count];
+    }
+
+  void poss::prob_helper(int i, int j,sudoku_one::board& lev,sudoku_one::rank &sim){
       int temp = 1;
       for(int a =0; a < 9 ; a++){
         for(int b =0; b < 9 ; b++){
-            if(matrics[a][b] != 0){
+            if(matrics[a][b] != 0 && lev.read(a,b) < lev.read(i,j)){
               children[temp] = sim.getindex(a,b);
-              std::cout << "get index: " << sim.getindex(a,b) << std::endl;
               temp++;
             }
           }
         }
+        for(int a = 0; a < 9 ; a++){
+          for(int b =0; b < 9 ; b++){
+              if(matrics[a][b] != 0 && lev.read(a,b) > lev.read(i,j)){
+                children[temp] = sim.getindex(a,b);
+                temp++;
+              }
+            }
+          }
     }
-  bool poss::anti_loop(int i, int j){
-      if(loop[i][j] == 1){
-        return true;
+  bool poss::anti_loop(int i, int j,sudoku_one::board &lev){
+      if(loop[i][j] == 20000000000){//tolerance
+        return false;
       }
       else{
-        loop[i][j] = 1;
+        loop[i][j]++;
         return false;
       }
     }

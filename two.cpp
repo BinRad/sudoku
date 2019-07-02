@@ -55,11 +55,11 @@ int main(){
                   if (i < 3) { //Section 1
                       if (j < 3) {// section 1,1
                           for (int a = 0; a < 3; a++) {
-                              //std::cout << k << "," << a <<std::endl;
+                              std::cout << k << "," << a <<std::endl;
                               if (lev.read(k, a) == answ) {
                                   answ++;
                                   k = 0;
-                                  a = 0;
+                                  a = -1;
                               }
                           }
                       }
@@ -69,7 +69,7 @@ int main(){
                               if (lev.read(k, a) == answ) {
                                   answ++;
                                   k = 0;
-                                  a = 3;
+                                  a = 2;
                               }
                           }
                       }
@@ -79,7 +79,7 @@ int main(){
                               if (lev.read(k, a) == answ) {
                                   answ++;
                                   k = 0;
-                                  a = 6;
+                                  a = 5;
                               }
                           }
                       }
@@ -91,7 +91,7 @@ int main(){
                               if (lev.read(k + 3, a) == answ) {
                                   answ++;
                                   k = 0;
-                                  a = 0;
+                                  a = -1;
                               }
                           }
                       }
@@ -101,7 +101,7 @@ int main(){
                               if (lev.read(k + 3, a) == answ) {
                                   answ++;
                                   k = 0;
-                                  a = 3;
+                                  a = 2;
                               }
                           }
                       }
@@ -111,7 +111,7 @@ int main(){
                               if (lev.read(k + 3, a) == answ) {
                                   answ++;
                                   k = 0;
-                                  a = 6;
+                                  a = 5;
                               }
                           }
                       }
@@ -123,7 +123,7 @@ int main(){
                               if (lev.read(k + 6, a) == answ) {
                                   answ++;
                                   k = 0;
-                                  a = 0;
+                                  a = -1;
                               }
                           }
                       }
@@ -133,7 +133,7 @@ int main(){
                               if (lev.read(k + 6, a) == answ) {
                                   answ++;
                                   k = 0;
-                                  a = 3;
+                                  a = 2;
                               }
                           }
                       }
@@ -143,7 +143,7 @@ int main(){
                               if (lev.read(k + 6, a) == answ) {
                                   answ++;
                                   k = 0;
-                                  a = 6;
+                                  a = 5;
                               }
                           }
                       }
