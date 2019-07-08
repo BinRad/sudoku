@@ -14,6 +14,7 @@ namespace sudoku_one {
   private:
     int matrics[9][9][9][9];
     int loop[9][9];
+    int violator[9][9];
   };
 }
 #endif

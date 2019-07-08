@@ -8,6 +8,7 @@ namespace sudoku_one {
     poss::poss(sudoku_one::board &lev, sudoku_one::rank &sim) {
         for (int a = 0; a < 9; a++) {
             for (int b = 0; b < 9; b++) {
+              violator[a][b] = 0;
                 for (int c = 0; c < 9; c++) {
                     for (int d = 0; d < 9; d++) {
                         matrics[a][b][c][d] = 0;
@@ -188,52 +189,115 @@ namespace sudoku_one {
     }
 
     void poss::violation(int i, int j, sudoku_one::board &lev) {
-        int temp = 0;
-        for (int a = 0; a < 9; a++) {
-            for (int b = 0; b < 9; b++) {
-                for (int c = 0; c < 9; c++) {
-                    for (int d = 0; d < 9; d++) {
-                        if (matrics[a][b][c][d] != 0) {
-                            matrics[a][b][c][d] = 1;
-                        }
-                    }
-                }
+      for (int c = 0; c < 9; c++) {
+          for (int d = 0; d < 9; d++) {
+              if (matrics[i][j][c][d] != 0){
+              lev.mod(c,d, 0);
             }
+          }
         }
-        while (fix(0, 0, i, j, lev, temp) != true) {
+        int entry, ans;
+        entry = finder(i,j,lev);
+        ans = finder(i,j,lev, entry +violator[i][j]);
+        if(ans!= 0){
+          lev.mod(i,j,ans);
+          for (int c = 0; c < 9; c++) {
+              for (int d = 0; d < 9; d++) {
+                matrics[c][d][i][j] = 111;
+              }
+            }
+          return;
+        }
+      violator[i][j]++;
+      for(int c = 0; c < 9; c++){
+         std::cout << std::endl;
+         if( c == 3 || c==6){
+           std::cout << std::endl;
+         }
+         for(int d = 0; d < 9; d++){
+             std::cout << violator[c][d] << " ";
+             if(d == 2 || d == 5){
+               std::cout << "  ";
+             }
+         }
+       }
+        int temp = 0;
+       // for (int a = 0; a < 9; a++) {
+       //     for (int b = 0; b < 9; b++) {
+       //         for (int c = 0; c < 9; c++) {
+       //             for (int d = 0; d < 9; d++) {
+       //                 if (matrics[a][b][c][d] == 2 || matrics[a][b][c][d] ==  3) {
+       //                     matrics[a][b][c][d] = 1;
+       //                 }
+       //             }
+       //         }
+       //     }
+       // }
+        while (fix(99, 99, i, j, lev, temp) != true) {
             temp++;
-            fix(0, 0, i, j, lev, temp);
+            fix(99, 99, i, j, lev, temp);
         }
     }
 
     bool poss::fix(int i, int j, int a, int b, sudoku_one::board &lev, int count) {
         //i, j are the old values
         //a, b are the current values
+        //std::cout <<i << j<< " " << a << b << std::endl;
+        if (lev.read(i, j) != 0) {
+          std::cout << "NONONO";
+            return false;
+        }
         int temp = 0;
         temp = next(a, b, lev, count);
         int x = temp / 9;
         int y = temp % 9;
         if (temp == 99) {
+          //   if( i == 99 && j == 99){
+          //     for (int c = 0; c < 9; c++) {
+          //         for (int d = 0; d < 9; d++) {
+          //       if(matrics[a][b][c][d] != 0){
+          //         matrics[a][b][c][d] = 1;
+          //       }
+          //     }
+          //   }
+          // }
             matrics[i][j][a][b] = 111;
-            int entry = 0;
-            entry = finder(a, b, lev, finder(i, j, lev) + 1);
+
+           lev.printout(4);
+           for(int c = 0; c < 9; c++){
+               std::cout << std::endl;
+               if( c == 3 || c==6){
+                 std::cout << std::endl;
+               }
+               for(int d = 0; d < 9; d++){
+                   std::cout << matrics[i][j][c][d] << " ";
+                   if(d == 2 || d == 5){
+                     std::cout << "  ";
+                   }
+               }
+             }
+
+            int entry = finder(a, b, lev);
+            if(lev.read(a,b) == entry){
+              entry = finder(a, b, lev, entry + 1);}
             if (entry == 0) {
                 if (count == 3) {
-                    std::cout << "yep we got here";
-                    return fix(0, 0, i, j, lev, temp);
-                } else {
-                    return false;
+                    return fix(99, 99, i, j, lev, count);
                 }
-                return fix(i, j, a, b, lev, count + 1);
+                if(next(a,b,lev,count) == 99){
+                    return fix(i, j, a, b, lev, count + 1);
+                }
             } else {
-                lev.mod(x, y, entry);
+                lev.mod(a, b, entry);
                 return true;
             }
         }
-        lev.mod(a, b, 0);
+        lev.mod(x, y, 0);
         return fix(a, b, x, y, lev, count);
     }
 
+    //if the entry "next" entry is = to count +1 then return it.
+    //if the entry has already been used
     int poss::next(int a, int b, sudoku_one::board &lev, int count) {
         for (int c = 0; c < 9; c++) {
             for (int d = 0; d < 9; d++) {
