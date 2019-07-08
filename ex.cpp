@@ -1,33 +1,88 @@
+//if current prob has same answers as last prob, then record that
 
-
-
-#include <iostream>
-
-
-int main(){
-  // int data[81][9];
-  // int num[81];
-  // for(int a = 0; a <81; a++){
-  //   for(int b = 0; b <9; b++){
-  //     data[a][b] = a;
-  //   }
-  // }
-  // for(int a = 0; a < 81; a++){
-  //   num[a] = a / 9;
-  // }
-  // for(int a = 0; a <81; a++){
-  //   std::cout << "num: " << num[a] << "   ";
-  //     std::cout << "data: " << data[a][num[a]] << std::endl;
-  // }
-  int k = 0;
-  while(k < 4){
-    for(int a = 0; a <3; a++){
-      if(a > 1){
-        k = 0;
-      }
-      std::cout << a << k<< std::endl;
-        k++;
-
-      }
-    }
+void make_prob(sudoku_one::board &lev){
+    for (int k = 0; k < 9; k++) {
+        if(lev.read_ini(a, k) != 0){
+          for(int c = 0; c<9; c++){
+              if()
+          }
+            return false;
+         }
+         if( lev.read_ini(k, b) != 0)){
+             return false;
+         }
+        //SECTION CHECKER
+        if (k < 3) {
+            if (a< 3) { //Section 1
+                if (b < 3) {// section 1,1
+                    for (int z = 0; z < 3; z++) {
+                        if (lev.read_ini(k, z) != 0) {
+                            return false;
+                          }
+                      }
+                  }
+                if (b > 2 && b < 6) {//section 1,2
+                    for (int z = 3; z < 6; z++) {
+                        if (lev.read_ini(k, z) != 0) {
+                            return false;
+                        }
+                    }
+                }
+                if (b > 5 && b < 9) {//section 1,3
+                    for (int z = 6; z < 9; z++) {
+                        if (lev.read_ini(k, z) != 0) {
+                            return false;
+                        }
+                    }
+                }
+            }//end section 1,k
+            if (a> 2 && a< 6) {//section 2, k
+                if (b < 3) {// section 2,1
+                    for (int z = 0; z < 3; z++) {
+                        if (lev.read_ini(k + 3, z) != 0) {
+                           return false;
+                        }
+                    }
+                }
+                if (b > 2 && b < 6) {//section 2,2
+                    for (int z = 3; z < 6; z++) {
+                        if (lev.read_ini(k + 3, z) != 0) {
+                           return false;
+                        }
+                    }
+                }
+                if (b > 5 && b < 9) {//section 2,3
+                    for (int z = 6; z < 9; z++) {
+                        if (lev.read_ini(k + 3, z) != 0) {
+                            return false;
+                        }
+                    }
+                }
+            }//end section 2,k
+            if (a> 5 && a< 9) {//section 3,k
+                if (b < 3) {// section 3,1
+                    for (int z = 0; z < 3; z++) {
+                        if (lev.read_ini(k + 6, z) != 0) {
+                          return false;
+                        }
+                    }
+                }
+                if (b > 2 && b < 6) {//section 3,2
+                    for (int z = 3; z < 6; z++) {
+                        if (lev.read_ini(k + 6, z) != 0) {
+                            return false;
+                          }
+                      }
+                  }
+                if (b > 5 && b < 9) {//section 3,3
+                    for (int z = 6; z < 9; z++) {
+                        if (lev.read_ini(k + 6, z) != 0) {
+                           return false;
+                          }
+                      }
+                  }
+              }//end section 3,k
+          }// end section checker
+      }//end k
+      return true;
 }

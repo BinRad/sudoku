@@ -100,7 +100,9 @@ namespace sudoku_one {
     }
     bool rank::advance() {
       if(current >= tail){
-        current = 0;
+        current = 80;
+        rows[80] = 99
+        cols[80] = 99;
         return false;
       }
       else{
