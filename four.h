@@ -19,6 +19,9 @@
         //will put the current answer marked as bad and update BAD_ENTRY
         // it will also return the correct entry
         //in bad_entry_row&col stores the i,j value
+        //move answer from answers to bad_ans
+        //also rearange current prob so that it is uniform with bad_ans
+        //and prob_row and prob_col
 // void find_poss_entries(sudoku_one::board &lev);
         //will be called by the constructor. It will be liek finder but
         //for the init board. It will populate the ANSWERS matrix
@@ -30,18 +33,42 @@
         //this will generate possible problem matrices
         //prob_row
         //prob_col
+        //lastly this will mark last prob after gettng to the
+        //last prob by inserting all of the ones before it
+//bool compare_ans(int a,int b,int x,int y,sudoku_one::board &lev);
+        //takes row col and compares it to the toher row cols
+        // passed in. If they ever have any fo the same possible answers
+        //then they are stored in prob_row and prob_col
 // void free_entry(sudoku_one::board &lev);
         //when there are no more possible entries for a given ij, then
-        // this will free one entry and then correc the mistakes caused by
+        // this will free one entry and then correct the mistakes caused by
         //freeing that entry recursively using HELPER functions
         //also checks and updates BAD_ENTRY, FREED, ANSWERS, CURRENT_ans
         // returns freed entry
+        //step 1: call check_for_free.
+        //step 2: call helper: using bad entry row and col, find which i,j
+            //caused entry at INDEX to be marked bad.
+        //step 3: return entry
+//int check_for_free(sudoku_one::board &lev);
+        //use finder checker to check any avaialble values in the
+        //answers matrix that haven't been marked as bad
+        //if all are bad return 99.
 // bool free_entry_helper(int a, int b, sudoku_one::board &lev);
         //runs recursively stoing i,j in it's recurive calls and then changing
         //the variables. It sets i,j to the orignal i,j that caused the need
         //for a free entry. It then calls solve on that entry. When solve returns
         //then this will put back i,j to what it was.
-
+//void set_issue(sudoku_one::board &lev);
+        //takes issue_x&y and sets them using prob_row[i][j][current_prob]
+        //importantly, it also keeps track of whether or not this speciifc issue
+        //for this particular i,j x,y was ever done before.
+        //if it was then it moves on the to the next problem
+//void next_problem(sudoku_one::board &lev);
+        //this safely updates current_prob and if there is no bad ans it will
+        //still update using whatever is in prob_row and prob_col
+//void mark_good(sudoku_one::board &lev);
+        //takes out current prob from bad_ans, bad_entry_col, bad_entry_row
+        // and puts them in the back. It then pushes everything forward. 
 
 #ifndef SUDOKU_ONE_FOUR_H
 #define SUDOKU_ONE_FOUR_H
@@ -52,7 +79,7 @@ namespace sudoku_one {
     //constructor and destructor
     four(sudoku_one::board &lev, sudoku_one::rank &sim);
     ~four();
-    //modification functions
+    //functions
     void solve(sudoku_one::board &lev);
     int finder(sudoku_one::board &lev);
     bool finder_checker(sudoku_one::board &lev);
@@ -60,25 +87,32 @@ namespace sudoku_one {
     void find_poss_entries(sudoku_one::board &lev);
     bool poss_entry_checker(int a, int b, int d, sudoku_one::board &lev);
     void make_prob(sudoku_one::board &lev);
+    bool compare_ans(int a,int b,int x,int y,sudoku_one::board &lev);
     int free_entry(sudoku_one::board &lev);
+    int check_for_free(sudoku_one::board &lev);
     bool free_entry_helper(int a, int b, sudoku_one::board &lev);
-
+    void set_issue(sudoku_one::board &lev);
+    void next_problem(sudoku_one::board &lev);
+    void mark_good(sudoku_one::board &lev);
   private:
     int i; //current row
     int j; //current column
+    int entry;
     int issue_x; //row value of issue
     int issue y; //col value of issue
     int prob_row[9][9][9]; //contains x for any possible confliciting entry of ij
     int prob_col[9][9][9]; //contains y for any possible confliciting entry of ij
     int answers[9][9][9]; //possible answers for each i,j
     int current_prob[9][9]; //index of problem to investigate currently for ij
-    int last_prob[9][9][9]; //index of last problem for each i,j
+    int last_prob[9][9]; //index of last problem for each i,j
     int current_ans[9][9]; //index value of current ans for i,j
-    int last_ans[9][9][9]; //index of last ans in ans matrix for i,j
+    int last_ans[9][9]; //index of last ans in ans matrix for i,j
     int bad_entry_row[9][9][9]; // stores i value which forced xy to update given index [x][y][index]
     int bad_entry_col[9][9][9]; // stores j value which forced xy to update given index [x][y][index]
+    int bad_ans[9][9][9]; // stores bad answers
     //index being taken from prob_row and prob_col
     int freed[9][9][9][9]; //is marked 1 if [i][j][x][y] was changed
+    int current_free[9][9]; //stores index
   };
 }
 #endif
