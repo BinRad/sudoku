@@ -110,8 +110,6 @@ namespace sudoku_one {
     int last_prob[9][9]; //index of last problem for each i,j
     int current_ans[9][9]; //index value of current ans for i,j
     int last_ans[9][9]; //index of last ans in ans matrix for i,j
-    int bad_entry_row[9][9][9]; // stores i value which forced xy to update given index [x][y][index]
-    int bad_entry_col[9][9][9]; // stores j value which forced xy to update given index [x][y][index]
     int bad_ans[9][9][9]; // stores bad answers
     //index being taken from prob_row and prob_col
     int freed[9][9][9][9]; //is marked 1 if [i][j][x][y] was changed

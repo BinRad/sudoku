@@ -240,6 +240,7 @@ namespace sudoku_one {
                 return a;
             }
         }
+        return 0;
 
     }
     int const rank::getrow(int index) {

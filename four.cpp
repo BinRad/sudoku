@@ -5,8 +5,8 @@
 
 namespace sudoku_one {
   four::four(sudoku_one::board &lev, sudoku_one::rank &sim){
-        i = sim.getrow(0);
-        j = sim.getcol(0);
+        i = sim.getrow();
+        j = sim.getcol();
         issue_x = 99;
         issue_y = 99;
         entry = 0;
@@ -14,23 +14,24 @@ namespace sudoku_one {
             for (int b = 0; b < 9; b++) {
                 for (int c = 0; c < 9; c++) {
                     for (int d = 0; d < 9; d++) {
-                        prob_row[a][b][c]= 99;
-                        prob_col[a][b][c] = 99;
-                        answers[a][b][c] = 0;
-                        current_prob[a][b] = 0;
-                        last_prob[a][b] = 0;
-                        current_ans[a][b] = 0;
-                        last_ans[a][b] = 0;
-                        bad_entry_row[a][b][c] = 0;
-                        bad_entry_col[a][b][c] = 0;
-                        bad_ans[a][b][c] = 99;
                         freed[a][b][c][d] = 0;
-                        current_free[a][b] = 0;
                     }
+                    prob_row[a][b][c] = 99;
+                    prob_col[a][b][c] = 99;
+                    answers[a][b][c] = 0;
+                    bad_ans[a][b][c] = 99;
                 }
+                current_prob[a][b] = 0;
+                last_prob[a][b] = 0;
+                current_ans[a][b] = 0;
+                last_ans[a][b] = 0;
+                current_free[a][b] = 0;
             }
+            std::cout << a <<std::endl;
         }
+
         find_poss_entries(lev, sim);
+        std::cout << "yo" << std::endl;
         solve(lev, sim);
     }
   //modification functions
@@ -40,6 +41,7 @@ namespace sudoku_one {
       sim.advance(i,j);
       i = sim.getrow();
       j = sim.getcol();
+      lev.printout(4);
       solve(lev, sim);
     }
   int four::finder(sudoku_one::board &lev, sudoku_one::rank &sim){
