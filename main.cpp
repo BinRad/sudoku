@@ -1,6 +1,7 @@
 #include <iostream>
 #include "board.h"
 #include "rank.h"
+#include "four.h"
 
 int main() {
     sudoku_one::board lev;

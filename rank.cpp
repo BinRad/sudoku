@@ -104,7 +104,7 @@ namespace sudoku_one {
         }
       if(current >= tail){
         current = 80;
-        rows[80] = 99
+        rows[80] = 99;
         cols[80] = 99;
         return false;
       }

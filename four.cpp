@@ -1,5 +1,6 @@
 #include "rank.h"
 #include "board.h"
+#include "four.h"
 #include <iostream>
 
 namespace sudoku_one {
@@ -7,7 +8,7 @@ namespace sudoku_one {
         i = sim.getrow(0);
         j = sim.getcol(0);
         issue_x = 99;
-        issue y = 99;
+        issue_y = 99;
         entry = 0;
         for (int a = 0; a < 9; a++) {
             for (int b = 0; b < 9; b++) {
@@ -19,7 +20,7 @@ namespace sudoku_one {
                         current_prob[a][b] = 0;
                         last_prob[a][b] = 0;
                         current_ans[a][b] = 0;
-                        last_ans[a][b][c] = 0;
+                        last_ans[a][b] = 0;
                         bad_entry_row[a][b][c] = 0;
                         bad_entry_col[a][b][c] = 0;
                         bad_ans[a][b][c] = 99;
@@ -29,28 +30,25 @@ namespace sudoku_one {
                 }
             }
         }
-        find_poss_entries(lev);
-        i = sim.getrow();
-        j = sim.getcol();
-        solve(lev);
+        find_poss_entries(lev, sim);
+        solve(lev, sim);
     }
-  ~four(){}
   //modification functions
-  void four::solve(sudoku_one::board &lev){
-      entry = finder(lev);
+  void four::solve(sudoku_one::board &lev, sudoku_one::rank &sim){
+      entry = finder(lev, sim);
       lev.mod(i, j, entry);
       sim.advance(i,j);
       i = sim.getrow();
       j = sim.getcol();
-      solve(lev);
+      solve(lev, sim);
     }
-  int four::finder(sudoku_one::board &lev){
+  int four::finder(sudoku_one::board &lev, sudoku_one::rank &sim){
       entry = answers[i][j][current_ans[i][j]];
       //while loop can be skipped if current ans is correct
-      while(!finder_checker){
+      while(finder_checker(lev, sim) == false){
           entry = answers[i][j][current_ans[i][j]];
           if(entry == 99){
-              entry = free_entry(lev);
+              entry = free_entry(lev, sim);
               // free_entry will update current_ans
           }
           else{
@@ -59,7 +57,7 @@ namespace sudoku_one {
       }
       return entry;
    }
-  bool four::finder_checker(sudoku_one::board &lev){
+  bool four::finder_checker(sudoku_one::board &lev, sudoku_one::rank &sim){
       //possible issue that entry is being checked against
       //itself since k does nto skip over the value that it is supposed to be
       //iterating through
@@ -69,13 +67,13 @@ namespace sudoku_one {
           if(lev.read(i, k) == entry){
               issue_x = i;
               issue_y = k;
-              mark_bad(lev);
+              mark_bad(lev, sim);
               return false;
            }
-           if( lev.read(k, j) == entry)){
+           if( lev.read(k, j) == entry){
                issue_x = k;
                issue_y = j;
-               mark_bad(lev);
+               mark_bad(lev, sim);
                return false;
            }
           //SECTION CHECKER
@@ -87,7 +85,7 @@ namespace sudoku_one {
                           if (lev.read(k, a) == entry) {
                               issue_x = k;
                               issue_y = a;
-                              mark_bad(lev);
+                              mark_bad(lev, sim);
                               return false;
                             }
                         }
@@ -104,7 +102,7 @@ namespace sudoku_one {
                           if (lev.read(k, a) == entry) {
                               issue_x = k;
                               issue_y = a;
-                              mark_bad(lev);
+                              mark_bad(lev, sim);
                               return false;
                           }
                       }
@@ -116,7 +114,7 @@ namespace sudoku_one {
                           if (lev.read(k + 3, a) == entry) {
                               issue_x = k+3;
                               issue_y = a;
-                              mark_bad(lev);
+                              mark_bad(lev, sim);
                              return false;
                           }
                       }
@@ -126,7 +124,7 @@ namespace sudoku_one {
                           if (lev.read(k + 3, a) == entry) {
                               issue_x = k+3;
                               issue_y = a;
-                              mark_bad(lev);
+                              mark_bad(lev, sim);
                              return false;
                           }
                       }
@@ -136,7 +134,7 @@ namespace sudoku_one {
                           if (lev.read(k + 3, a) == entry) {
                               issue_x = k+3;
                               issue_y = a;
-                              mark_bad(lev);
+                              mark_bad(lev, sim);
                               return false;
                           }
                       }
@@ -148,7 +146,7 @@ namespace sudoku_one {
                           if (lev.read(k + 6, a) == entry) {
                               issue_x = k+6;
                               issue_y = a;
-                              mark_bad(lev);
+                              mark_bad(lev, sim);
                             return false;
                           }
                       }
@@ -158,7 +156,7 @@ namespace sudoku_one {
                           if (lev.read(k + 6, a) == entry) {
                               issue_x = k+6;
                               issue_y = a;
-                              mark_bad(lev);
+                              mark_bad(lev, sim);
                               return false;
                             }
                         }
@@ -168,7 +166,7 @@ namespace sudoku_one {
                           if (lev.read(k + 6, a) == entry) {
                               issue_x = k+6;
                               issue_y = a;
-                              mark_bad(lev);
+                              mark_bad(lev, sim);
                              return false;
                             }
                         }
@@ -178,12 +176,12 @@ namespace sudoku_one {
         }//end k
         return true;
   }
-  void four::mark_bad(sudoku_one::board &lev){
+  void four::mark_bad(sudoku_one::board &lev, sudoku_one::rank &sim){
       //take entry out of answers array
       int tempans = answers[i][j][current_ans[i][j]];
       int c = current_ans[i][j];
       while(answers[i][j][c+1] != 99){
-          answers[i][j][c] = answers[i][j][c + 1]
+          answers[i][j][c] = answers[i][j][c + 1];
       }
       last_ans[i][j]--;
       int d = 0;
@@ -218,12 +216,12 @@ namespace sudoku_one {
         prob_col[i][j][d] = issue_y;
     }
   }
-  void four::find_poss_entries(sudoku_one::board &lev){
+  void four::find_poss_entries(sudoku_one::board &lev, sudoku_one::rank &sim){
       int c = 0;
       for (int a = 0; a < 9; a++) {
           for (int b = 0; b < 9; b++) {
                   for (int d = 1; d < 9; d++) {
-                      if(poss_entry_checker(a,b, d, lev)){
+                      if(poss_entry_checker(a,b, d, lev, sim)){
                           answers[a][b][last_ans[a][b]] = d;
                           last_ans[a][b]++;
                         }
@@ -235,15 +233,15 @@ namespace sudoku_one {
                     }
             }
         }
-        make_prob(lev);
+        make_prob(lev, sim);
     }
-  bool four::poss_entry_checker(int a, int b, int d, sudoku_one::board &lev){
+  bool four::poss_entry_checker(int a, int b, int d, sudoku_one::board &lev, sudoku_one::rank &sim){
       for (int k = 0; k < 9; k++) {
           if(lev.read_ini(a, k) == d){
 
               return false;
            }
-           if( lev.read_ini(k, b) == d)){
+           if( lev.read_ini(k, b) == d){
                return false;
            }
           //SECTION CHECKER
@@ -321,16 +319,16 @@ namespace sudoku_one {
         }//end k
         return true;
   }
-  void four::make_prob(sudoku_one::board &lev){
+  void four::make_prob(sudoku_one::board &lev, sudoku_one::rank &sim){
       for (int a = 0; a < 9; a++) {
           for (int b = 0; b < 9; b++) {
               for (int k = 0; k < 9; k++) {
                   if(lev.read_ini(a, k) == 0){
-                        compare_ans(a,b,a,k,lev);
+                        compare_ans(a,b,a,k,lev, sim);
                         k = 0;
                     }
-                   if( lev.read_ini(k, b) == 0)){
-                       compare_ans(a,b,a,k,lev);
+                   if( lev.read_ini(k, b) == 0){
+                       compare_ans(a,b,a,k,lev, sim);
                        k = 0;
                       }
                   //SECTION CHECKER
@@ -339,7 +337,7 @@ namespace sudoku_one {
                           if (b < 3) {// section 1,1
                               for (int z = 0; z < 3; z++) {
                                   if (lev.read_ini(k, z) == 0) {
-                                      compare_ans(a,b,k,z,lev);
+                                      compare_ans(a,b,k,z,lev, sim);
                                       k = 0;
                                       a = -1;
                                     }
@@ -348,7 +346,7 @@ namespace sudoku_one {
                           if (b > 2 && b < 6) {//section 1,2
                               for (int z = 3; z < 6; z++) {
                                   if (lev.read_ini(k, z) == 0) {
-                                      compare_ans(a,b,k,z,lev);
+                                      compare_ans(a,b,k,z,lev, sim);
                                       k = 0;
                                       a = 2;
                                   }
@@ -357,7 +355,7 @@ namespace sudoku_one {
                           if (b > 5 && b < 9) {//section 1,3
                               for (int z = 6; z < 9; z++) {
                                   if (lev.read_ini(k, z) == 0) {
-                                      compare_ans(a,b,k,z,lev);
+                                      compare_ans(a,b,k,z,lev, sim);
                                       k = 0;
                                       a= 5;
                                   }
@@ -368,7 +366,7 @@ namespace sudoku_one {
                           if (b < 3) {// section 2,1
                               for (int z = 0; z < 3; z++) {
                                   if (lev.read_ini(k + 3, z) == 0) {
-                                      compare_ans(a,b,k+3,z,lev);
+                                      compare_ans(a,b,k+3,z,lev, sim);
                                       k = 0;
                                       a = -1;
                                   }
@@ -377,7 +375,7 @@ namespace sudoku_one {
                           if (b > 2 && b < 6) {//section 2,2
                               for (int z = 3; z < 6; z++) {
                                   if (lev.read_ini(k + 3, z) == 0) {
-                                      compare_ans(a,b,k+3,z,lev);
+                                      compare_ans(a,b,k+3,z,lev, sim);
                                       k = 0;
                                       a = 2;
                                   }
@@ -386,7 +384,7 @@ namespace sudoku_one {
                           if (b > 5 && b < 9) {//section 2,3
                               for (int z = 6; z < 9; z++) {
                                   if (lev.read_ini(k + 3, z) == 0) {
-                                      compare_ans(a,b,k+3,z,lev);
+                                      compare_ans(a,b,k+3,z,lev, sim);
                                       k = 0;
                                       a = 5;
                                   }
@@ -397,7 +395,7 @@ namespace sudoku_one {
                           if (b < 3) {// section 3,1
                               for (int z = 0; z < 3; z++) {
                                   if (lev.read_ini(k + 6, z) == 0) {
-                                      compare_ans(a,b,k+6,z,lev);
+                                      compare_ans(a,b,k+6,z,lev, sim);
                                       k = 0;
                                       a = -1;
                                   }
@@ -406,7 +404,7 @@ namespace sudoku_one {
                           if (b > 2 && b < 6) {//section 3,2
                               for (int z = 3; z < 6; z++) {
                                   if (lev.read_ini(k + 6, z) == 0) {
-                                      compare_ans(a,b,k+6,z,lev);
+                                      compare_ans(a,b,k+6,z,lev, sim);
                                       k = 0;
                                       a = 2;
                                     }
@@ -415,7 +413,7 @@ namespace sudoku_one {
                           if (b > 5 && b < 9) {//section 3,3
                               for (int z = 6; z < 9; z++) {
                                   if (lev.read_ini(k + 6, z) == 0) {
-                                      compare_ans(a,b,k+6,z,lev);
+                                      compare_ans(a,b,k+6,z,lev, sim);
                                       k = 0;
                                       a = 5;
                                     }
@@ -432,9 +430,9 @@ namespace sudoku_one {
                 current_prob[c][d] = 0;
             }
         }
-        return true;
+        //return true;
   }
-  bool four::compare_ans(int a,int b,int x,int y,sudoku_one::board &lev){
+  bool four::compare_ans(int a,int b,int x,int y,sudoku_one::board &lev, sudoku_one::rank &sim){
       for(int y = 0; y < 9; y++){
           for(int z = 0; z < 9; z++){
               if(answers[a][b][y] == answers[x][y][z] && answers[a][b][y] != 99){
@@ -447,9 +445,9 @@ namespace sudoku_one {
       }
       return false;
   }
-  int four::free_entry(sudoku_one::board &lev){
+  int four::free_entry(sudoku_one::board &lev, sudoku_one::rank &sim){
       int temp = 99;
-      temp = check_for_free(lev);
+      temp = check_for_free(lev, sim);
       if(temp != 99){
           return temp;
       }
@@ -465,23 +463,23 @@ namespace sudoku_one {
                   return 99;
               }
           }
-          set_issue(lev);
-          mark_good(lev);
-          free_entry_helper(lev);
+          set_issue(lev, sim);
+          mark_good(lev, sim);
+          free_entry_helper(lev, sim);
       }
       return entry;
   }
-  int four::check_for_free(sudoku_one::board &lev){
+  int four::check_for_free(sudoku_one::board &lev, sudoku_one::rank &sim){
       int c = 0;
       while(answers[i][j][c] != 99){
           entry = answers[i][j][c];
-          if(finder_checker(lev)){
+          if(finder_checker(lev, sim)){
               return answers[i][j][c];
           }
       }
       return 99;
   }
-  bool four::free_entry_helper(int a, int b, sudoku_one::board &lev){
+  void four::free_entry_helper(sudoku_one::board &lev, sudoku_one::rank &sim){
       int tempx, tempy;
       tempx = i;
       tempy  = j;
@@ -489,10 +487,10 @@ namespace sudoku_one {
       j = issue_y;
       issue_x = tempx;
       issue_y = tempy;
-      mark_bad(lev);
-      solve(lev);
+      mark_bad(lev, sim);
+      solve(lev, sim);
   }
-  void four::set_issue(sudoku_one::board &lev){
+  void four::set_issue(sudoku_one::board &lev, sudoku_one::rank &sim){
       issue_x = prob_row[i][j][current_prob[i][j]];
       issue_y = prob_col[i][j][current_prob[i][j]];
       if(freed[i][j][issue_x][issue_y] == 0){
@@ -500,20 +498,20 @@ namespace sudoku_one {
           //now go back to free_entry
       }else{
           //go to the next problem
-          next_problem();
-          free_entry(lev);
+          next_problem(lev, sim);
+          free_entry(lev, sim);
           //this may cause a loop. in order to fix this we need to say this is
           //all done. you cannot change the entry for this x,y anymore. We need
           //to move to the next x,y or maybe the next x,y of the next x,y
       }
   }
-  void four::next_problem(sudoku_one::board &lev){
+  void four::next_problem(sudoku_one::board &lev, sudoku_one::rank &sim){
     if(current_prob[i][j]+1 != last_prob[i][j])
     {
         current_prob[i][j]++;
         if(bad_ans[i][j][current_prob[i][j]] == 99){
-            issue_x = prob_row[i][j][current_prob];
-            issue_y = prob_col[i][j][current_prob];
+            issue_x = prob_row[i][j][current_prob[i][j]];
+            issue_y = prob_col[i][j][current_prob[i][j]];
             entry = lev.read(issue_x, issue_y);
         }
     }
@@ -525,7 +523,7 @@ namespace sudoku_one {
         //to move to the next x,y or maybe the next x,y of the next x,y
     }
 }
-  void four::mark_good(sudoku_one::board &lev){
+  void four::mark_good(sudoku_one::board &lev, sudoku_one::rank &sim){
       int c = current_prob[i][j] + 1;
       int endans = bad_ans[i][j][current_prob[i][j]];
       int endx = prob_row[i][j][current_prob[i][j]];
@@ -537,14 +535,16 @@ namespace sudoku_one {
           c++;
       }
       if(prob_row[i][j][c] == 99 && prob_col[i][j][c] == 99){
-          std::cout <<c < "==" << last_prob << std::endl;
+          std::cout << c << "==" << last_prob[i][j] << std::endl;
           prob_row[i][j][c] = endx;
           prob_col[i][j][c] = endy;
       }
-      answers[i][j][last_ans+1] = end_ans;
-      last_ans[i][j]++;
-      current_prob[i][j] = 0;
       else{
           std::cout << "mark_good needs help when thing hasnt been marked back but has been added to lev" << std::endl;
       }
+      answers[i][j][last_ans[i][j]+1] = endans;
+      last_ans[i][j]++;
+      current_prob[i][j] = 0;
+    }
+
   }
