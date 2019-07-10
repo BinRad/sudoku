@@ -17,7 +17,6 @@
         //it can also change the x,y
 //int mark_bad(sudoku_one::board &lev);
         //will put the current answer marked as bad and update BAD_ENTRY
-        // it will also return the correct entry
         //in bad_entry_row&col stores the i,j value
         //move answer from answers to bad_ans
         //also rearange current prob so that it is uniform with bad_ans
@@ -54,7 +53,7 @@
         //answers matrix that haven't been marked as bad
         //if all are bad return 99.
 // bool free_entry_helper(int a, int b, sudoku_one::board &lev);
-        //runs recursively stoing i,j in it's recurive calls and then changing
+        //runs recursively storing i,j in it's recurive calls and then changing
         //the variables. It sets i,j to the orignal i,j that caused the need
         //for a free entry. It then calls solve on that entry. When solve returns
         //then this will put back i,j to what it was.
@@ -68,7 +67,7 @@
         //still update using whatever is in prob_row and prob_col
 //void mark_good(sudoku_one::board &lev);
         //takes out current prob from bad_ans, bad_entry_col, bad_entry_row
-        // and puts them in the back. It then pushes everything forward. 
+        // and puts them in the back. It then pushes everything forward.
 
 #ifndef SUDOKU_ONE_FOUR_H
 #define SUDOKU_ONE_FOUR_H

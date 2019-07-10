@@ -12,7 +12,7 @@ namespace sudoku_one {
     public:
       rank(sudoku_one::board lev);
       ~rank(){}
-      bool advance();
+      bool advance(int i = 99, int j = 99);
       bool rerank(sudoku_one::board lev);
       void beginning();
       int const getindex(int x, int y);

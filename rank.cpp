@@ -98,7 +98,10 @@ namespace sudoku_one {
         }
         //end constructor
     }
-    bool rank::advance() {
+    bool rank::advance(int i, int j) {
+        if(i != 99 && j != 99){
+            current = getindex(i,j);
+        }
       if(current >= tail){
         current = 80;
         rows[80] = 99

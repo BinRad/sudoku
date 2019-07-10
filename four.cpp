@@ -13,8 +13,8 @@ namespace sudoku_one {
             for (int b = 0; b < 9; b++) {
                 for (int c = 0; c < 9; c++) {
                     for (int d = 0; d < 9; d++) {
-                        prob_row[a][b][c]= 0;
-                        prob_col[a][b][c] = 0;
+                        prob_row[a][b][c]= 99;
+                        prob_col[a][b][c] = 99;
                         answers[a][b][c] = 0;
                         current_prob[a][b] = 0;
                         last_prob[a][b] = 0;
@@ -30,6 +30,8 @@ namespace sudoku_one {
             }
         }
         find_poss_entries(lev);
+        i = sim.getrow();
+        j = sim.getcol();
         solve(lev);
     }
   ~four(){}
@@ -37,7 +39,7 @@ namespace sudoku_one {
   void solve(sudoku_one::board &lev){
       entry = finder(lev);
       lev.mod(i, j, entry);
-      sim.advance();
+      sim.advance(i,j);
       i = sim.getrow();
       j = sim.getcol();
       solve(lev);
@@ -58,6 +60,11 @@ namespace sudoku_one {
       return entry;
    }
   bool finder_checker(sudoku_one::board &lev){
+      //possible issue that entry is being checked against
+      //itself since k does nto skip over the value that it is supposed to be
+      //iterating through
+      //may cause ti to passover a valid answer. easy fix if necessary
+      //just if statement when k == j when applicable etc...
       for (int k = 0; k < 9; k++) {
           if(lev.read(i, k) == entry){
               issue_x = i;
@@ -172,7 +179,44 @@ namespace sudoku_one {
         return true;
   }
   int mark_bad(sudoku_one::board &lev){
-
+      //take entry out of answers array
+      int tempans = answers[i][j][current_ans[i][j]];
+      int c = current_ans[i][j];
+      while(answers[i][j][c+1] != 99){
+          answers[i][j][c] = answers[i][j][c + 1]
+      }
+      last_ans[i][j]--;
+      int d = 0;
+      while(bad_ans[i][j][d] != 99){
+          d++;
+      }
+      bad_ans[i][j][d] = tempans;
+      update_prob_data(d);
+  }
+  void update_prob_data(int d){
+      // q is where x and y are currently in the arrays
+      // d is the index position we want them to be in
+      int q = 0;
+    while(prob_row[i][j][q] != issue_x && prob_col[i][j][q] != issue_y){
+        q++;
+    }
+    if(q == d){
+        return;
+    }
+    else{
+        while(q < d){
+            prob_row[i][j][q] = prob_row[i][j][q+1];
+            prob_col[i][j][q] = prob_col[i][j][q+1];
+            q++;
+        }
+        while(q > d){
+            prob_row[i][j][q] = prob_row[i][j][q-1];
+            prob_col[i][j][q] = prob_col[i][j][q-1];
+            q--;
+        }
+        prob_row[i][j][d] = issue_x;
+        prob_col[i][j][d] = issue_y;
+    }
   }
   void find_poss_entries(sudoku_one::board &lev){
       int c = 0;
@@ -410,7 +454,7 @@ namespace sudoku_one {
           return temp;
       }
       else{
-          entry = bad_ans[i][j][current_prob];
+          entry = bad_ans[i][j][current_prob[i][j]];
           if(entry == 99){ //if there is no current entry
               current_prob[i][j] = 0;
               entry = bad_ans[i][j][current_prob[i][j]];
@@ -421,9 +465,9 @@ namespace sudoku_one {
                   return 99;
               }
           }
-          free_entry_helper(lev);
+          set_issue(lev);
           mark_good(lev);
-          next_problem(lev);
+          free_entry_helper(lev);
       }
       return entry;
   }
@@ -438,11 +482,13 @@ namespace sudoku_one {
       return 99;
   }
   bool free_entry_helper(int a, int b, sudoku_one::board &lev){
-
+      i = issue_x;
+      j = issue_y;
+      mark_bad(lev);
   }
   void set_issue(sudoku_one::board &lev){
-      issue_x = prob_row[i][j][current_prob];
-      issue_y = prob_col[i][j][current_prob];
+      issue_x = prob_row[i][j][current_prob[i][j]];
+      issue_y = prob_col[i][j][current_prob[i][j]];
       if(freed[i][j][issue_x][issue_y] == 0){
           freed[i][j][issue_x][issue_y] = 1;//update matrix
           //now go back to free_entry
@@ -484,11 +530,14 @@ namespace sudoku_one {
           prob_col[i][j][c-1] = prob_col[i][j][c];
           c++;
       }
-      if(prob_row[i][j][c] == 0 && prob_col[i][j][c] == 0){
-          bad_ans[i][j][c] = endans;
+      if(prob_row[i][j][c] == 99 && prob_col[i][j][c] == 99){
+          std::cout <<c < "==" << last_prob << std::endl;
           prob_row[i][j][c] = endx;
           prob_col[i][j][c] = endy;
       }
+      answers[i][j][last_ans+1] = end_ans;
+      last_ans[i][j]++;
+      current_prob[i][j] = 0;
       else{
           std::cout << "mark_good needs help when thing hasnt been marked back but has been added to lev" << std::endl;
       }
