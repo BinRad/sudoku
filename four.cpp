@@ -3,7 +3,7 @@
 #include <iostream>
 
 namespace sudoku_one {
-  four(sudoku_one::board &lev, sudoku_one::rank &sim){
+  four::four(sudoku_one::board &lev, sudoku_one::rank &sim){
         i = sim.getrow(0);
         j = sim.getcol(0);
         issue_x = 99;
@@ -36,7 +36,7 @@ namespace sudoku_one {
     }
   ~four(){}
   //modification functions
-  void solve(sudoku_one::board &lev){
+  void four::solve(sudoku_one::board &lev){
       entry = finder(lev);
       lev.mod(i, j, entry);
       sim.advance(i,j);
@@ -44,7 +44,7 @@ namespace sudoku_one {
       j = sim.getcol();
       solve(lev);
     }
-  int finder(sudoku_one::board &lev){
+  int four::finder(sudoku_one::board &lev){
       entry = answers[i][j][current_ans[i][j]];
       //while loop can be skipped if current ans is correct
       while(!finder_checker){
@@ -59,7 +59,7 @@ namespace sudoku_one {
       }
       return entry;
    }
-  bool finder_checker(sudoku_one::board &lev){
+  bool four::finder_checker(sudoku_one::board &lev){
       //possible issue that entry is being checked against
       //itself since k does nto skip over the value that it is supposed to be
       //iterating through
@@ -178,7 +178,7 @@ namespace sudoku_one {
         }//end k
         return true;
   }
-  int mark_bad(sudoku_one::board &lev){
+  void four::mark_bad(sudoku_one::board &lev){
       //take entry out of answers array
       int tempans = answers[i][j][current_ans[i][j]];
       int c = current_ans[i][j];
@@ -193,7 +193,7 @@ namespace sudoku_one {
       bad_ans[i][j][d] = tempans;
       update_prob_data(d);
   }
-  void update_prob_data(int d){
+  void four::update_prob_data(int d){
       // q is where x and y are currently in the arrays
       // d is the index position we want them to be in
       int q = 0;
@@ -218,7 +218,7 @@ namespace sudoku_one {
         prob_col[i][j][d] = issue_y;
     }
   }
-  void find_poss_entries(sudoku_one::board &lev){
+  void four::find_poss_entries(sudoku_one::board &lev){
       int c = 0;
       for (int a = 0; a < 9; a++) {
           for (int b = 0; b < 9; b++) {
@@ -237,7 +237,7 @@ namespace sudoku_one {
         }
         make_prob(lev);
     }
-  bool poss_entry_checker(int a, int b, int d, sudoku_one::board &lev){
+  bool four::poss_entry_checker(int a, int b, int d, sudoku_one::board &lev){
       for (int k = 0; k < 9; k++) {
           if(lev.read_ini(a, k) == d){
 
@@ -321,7 +321,7 @@ namespace sudoku_one {
         }//end k
         return true;
   }
-  void make_prob(sudoku_one::board &lev){
+  void four::make_prob(sudoku_one::board &lev){
       for (int a = 0; a < 9; a++) {
           for (int b = 0; b < 9; b++) {
               for (int k = 0; k < 9; k++) {
@@ -434,7 +434,7 @@ namespace sudoku_one {
         }
         return true;
   }
-  bool compare_ans(int a,int b,int x,int y,sudoku_one::board &lev){
+  bool four::compare_ans(int a,int b,int x,int y,sudoku_one::board &lev){
       for(int y = 0; y < 9; y++){
           for(int z = 0; z < 9; z++){
               if(answers[a][b][y] == answers[x][y][z] && answers[a][b][y] != 99){
@@ -447,7 +447,7 @@ namespace sudoku_one {
       }
       return false;
   }
-  int free_entry(sudoku_one::board &lev){
+  int four::free_entry(sudoku_one::board &lev){
       int temp = 99;
       temp = check_for_free(lev);
       if(temp != 99){
@@ -471,7 +471,7 @@ namespace sudoku_one {
       }
       return entry;
   }
-  int check_for_free(sudoku_one::board &lev){
+  int four::check_for_free(sudoku_one::board &lev){
       int c = 0;
       while(answers[i][j][c] != 99){
           entry = answers[i][j][c];
@@ -481,12 +481,18 @@ namespace sudoku_one {
       }
       return 99;
   }
-  bool free_entry_helper(int a, int b, sudoku_one::board &lev){
+  bool four::free_entry_helper(int a, int b, sudoku_one::board &lev){
+      int tempx, tempy;
+      tempx = i;
+      tempy  = j;
       i = issue_x;
       j = issue_y;
+      issue_x = tempx;
+      issue_y = tempy;
       mark_bad(lev);
+      solve(lev);
   }
-  void set_issue(sudoku_one::board &lev){
+  void four::set_issue(sudoku_one::board &lev){
       issue_x = prob_row[i][j][current_prob[i][j]];
       issue_y = prob_col[i][j][current_prob[i][j]];
       if(freed[i][j][issue_x][issue_y] == 0){
@@ -501,7 +507,7 @@ namespace sudoku_one {
           //to move to the next x,y or maybe the next x,y of the next x,y
       }
   }
-  void next_problem(sudoku_one::board &lev){
+  void four::next_problem(sudoku_one::board &lev){
     if(current_prob[i][j]+1 != last_prob[i][j])
     {
         current_prob[i][j]++;
@@ -519,7 +525,7 @@ namespace sudoku_one {
         //to move to the next x,y or maybe the next x,y of the next x,y
     }
 }
-  void mark_good(sudoku_one::board &lev){
+  void four::mark_good(sudoku_one::board &lev){
       int c = current_prob[i][j] + 1;
       int endans = bad_ans[i][j][current_prob[i][j]];
       int endx = prob_row[i][j][current_prob[i][j]];

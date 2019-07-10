@@ -15,12 +15,17 @@
         //it also calls marks_bad on any entryt hat causes it to be false
         //this also store which x,y caused that soif it needs to free()
         //it can also change the x,y
-//int mark_bad(sudoku_one::board &lev);
-        //will put the current answer marked as bad and update BAD_ENTRY
-        //in bad_entry_row&col stores the i,j value
-        //move answer from answers to bad_ans
-        //also rearange current prob so that it is uniform with bad_ans
-        //and prob_row and prob_col
+//void mark_bad(sudoku_one::board &lev);
+        //takes entry out of answers and shifts them
+        //also update last_ans
+        //puts entry into bad_ans
+        //updtaes prob_row and prob_col using function update_prob_data
+//void update_prob_data(int d);
+        //finds where x,y is in prob row and col
+        //either shifts everything u or everything down depending on where
+        //d is
+        //then places x,y in d index
+        //d index is where bad_ans is stored
 // void find_poss_entries(sudoku_one::board &lev);
         //will be called by the constructor. It will be liek finder but
         //for the init board. It will populate the ANSWERS matrix
@@ -53,10 +58,8 @@
         //answers matrix that haven't been marked as bad
         //if all are bad return 99.
 // bool free_entry_helper(int a, int b, sudoku_one::board &lev);
-        //runs recursively storing i,j in it's recurive calls and then changing
-        //the variables. It sets i,j to the orignal i,j that caused the need
-        //for a free entry. It then calls solve on that entry. When solve returns
-        //then this will put back i,j to what it was.
+        //sets xy as ij and vice versa. then calls marks_bad
+        // then calls solve
 //void set_issue(sudoku_one::board &lev);
         //takes issue_x&y and sets them using prob_row[i][j][current_prob]
         //importantly, it also keeps track of whether or not this speciifc issue
@@ -82,7 +85,8 @@ namespace sudoku_one {
     void solve(sudoku_one::board &lev);
     int finder(sudoku_one::board &lev);
     bool finder_checker(sudoku_one::board &lev);
-    int mark_bad(sudoku_one::board &lev);
+    void mark_bad(sudoku_one::board &lev);
+    void update_prob_data(int d);
     void find_poss_entries(sudoku_one::board &lev);
     bool poss_entry_checker(int a, int b, int d, sudoku_one::board &lev);
     void make_prob(sudoku_one::board &lev);
