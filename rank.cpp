@@ -81,7 +81,9 @@ namespace sudoku_one {
             //std::cout << "i,j: " << i<< ","<< j << std::endl;
             rows[counter] = i;
             cols[counter] = j;
-            lev.mod_ini(i, j, 5);
+            lev.mod(i, j, 5);
+            // lev.printout();
+            // lev.printout(4);
             counter++;
             //end while
         }

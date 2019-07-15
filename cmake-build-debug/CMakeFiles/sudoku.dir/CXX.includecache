@@ -14,43 +14,41 @@ iostream
 
 /home/binrad/Documents/sudoku/board.h
 
-/home/binrad/Documents/sudoku/poss.cpp
-poss.h
-/home/binrad/Documents/sudoku/poss.h
+/home/binrad/Documents/sudoku/four.cpp
 rank.h
 /home/binrad/Documents/sudoku/rank.h
 board.h
 /home/binrad/Documents/sudoku/board.h
-iostream
--
-assert.h
-/home/binrad/Documents/sudoku/assert.h
-
-/home/binrad/Documents/sudoku/poss.h
-
-/home/binrad/Documents/sudoku/rank.cpp
-rank.h
-/home/binrad/Documents/sudoku/rank.h
-board.h
-/home/binrad/Documents/sudoku/board.h
+four.h
+/home/binrad/Documents/sudoku/four.h
 iostream
 -
 
-/home/binrad/Documents/sudoku/rank.h
+/home/binrad/Documents/sudoku/four.h
 
-/home/binrad/Documents/sudoku/three.cpp
+/home/binrad/Documents/sudoku/main.cpp
 iostream
 -
 board.h
 /home/binrad/Documents/sudoku/board.h
 rank.h
 /home/binrad/Documents/sudoku/rank.h
-poss.h
-/home/binrad/Documents/sudoku/poss.h
+four.h
+/home/binrad/Documents/sudoku/four.h
 board.cpp
 /home/binrad/Documents/sudoku/board.cpp
 rank.cpp
 /home/binrad/Documents/sudoku/rank.cpp
-poss.cpp
-/home/binrad/Documents/sudoku/poss.cpp
+four.cpp
+/home/binrad/Documents/sudoku/four.cpp
+
+/home/binrad/Documents/sudoku/rank.cpp
+rank.h
+/home/binrad/Documents/sudoku/rank.h
+board.h
+/home/binrad/Documents/sudoku/board.h
+iostream
+-
+
+/home/binrad/Documents/sudoku/rank.h
 

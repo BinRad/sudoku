@@ -1,1 +1,1 @@
-/usr/bin/c++  -g   CMakeFiles/sudoku.dir/three.cpp.o  -o sudoku 
+/usr/bin/c++  -g   CMakeFiles/sudoku.dir/main.cpp.o  -o sudoku 
