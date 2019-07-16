@@ -17,10 +17,12 @@ namespace sudoku_one {
                     for (int d = 0; d < 9; d++) {
                         freed[a][b][c][d] = 0;
                     }
-                    prob_row[a][b][c] = 99;
-                    prob_col[a][b][c] = 99;
                     answers[a][b][c] = 99;
                     bad_ans[a][b][c] = 99;
+                }
+                for(int w = 0; w < 81; w++){
+                    prob_row[a][b][w] = 99;
+                    prob_col[a][b][w] = 99;
                 }
                 current_prob[a][b] = 0;
                 last_prob[a][b] = 0;
@@ -30,21 +32,17 @@ namespace sudoku_one {
             }
         }
         find_poss_entries(lev, sim);
-        std::cout <<answers[0][0][0] << std::endl;
         make_prob(lev, sim);
-        std::cout <<answers[0][0][0] << std::endl;
         solve(lev, sim);
     }
 
     //modification functions
     void four::solve(sudoku_one::board &lev, sudoku_one::rank &sim) {
-        int a = 0;
-        assert(a ==2);
         entry = finder(lev, sim);
         std::cout << i << j << entry << std::endl;
+        lev.mod(i, j, entry);
         lev.printout();
         lev.printout(4);
-        lev.mod(i, j, entry);
         sim.advance(i, j);
         i = sim.getrow();
         j = sim.getcol();
@@ -58,8 +56,8 @@ namespace sudoku_one {
         entry = answers[i][j][current_ans[i][j]];
         //while loop can be skipped if current ans is correct
         while (finder_checker(lev, sim) == false || entry == 99) {
+            entry = answers[i][j][current_ans[i][j]];
             if (entry == 99) {
-                entry = answers[i][j][current_ans[i][j]];
                 std::cout << i << j << "99 to free entry awayyyyy" << std::endl;
                 entry = free_entry(lev, sim);
                 // free_entry will update current_ans
@@ -67,7 +65,6 @@ namespace sudoku_one {
             } else {
                 current_ans[i][j]++;
             }
-            entry = answers[i][j][current_ans[i][j]];
             std::cout << i << j << entry << "indisde while" << std::endl;
         }
         return entry;
@@ -343,150 +340,145 @@ namespace sudoku_one {
                 for (int k = 0; k < 9; k++) {
                     if (lev.read_ini(a, k) == 0) {
                         if (b != k) {
-                            std::cout << "b4; first possible ans for 0,0:    " << answers[0][0][0] << "    abk: " << a << b << k << std::endl;
                             compare_ans(a, b, a, k);
-                            std::cout << "after; first possible ans for 0,0: " << answers[0][0][0] << "    abk: " << a << b << k << std::endl;
-                        }
                         //k = 0;
                     }
                     if (lev.read_ini(k, b) == 0) {
                         if (a != k) {
-                            std::cout << "b5; first possible ans for 0,0:    " << answers[0][0][0] << "    abk: " << a << b << k << std::endl;
                             compare_ans(a, b, k, b);
-                            std::cout << "after6; first possible ans for 0,0:    " << answers[0][0][0] << "    abk: " << a << b << k << std::endl;
                         }
                         //k = 0;
                     }
-//                     //SECTION CHECKER
-//                     if (k < 3) {
-//                         if (a < 3) { //Section 1
-//                             if (b < 3) {// section 1,1
-//                                 for (int z = 0; z < 3; z++) {
-//                                     if (lev.read_ini(k, z) == 0) {
-//                                         if (a != k || b != z) {
-//                                             compare_ans(a, b, k, z, lev, sim);
-//                                         }
-//                                         //k = 0;
-//                                         //a = -1;
-//                                     }
-//                                 }
-//                             }
-//                             if (b > 2 && b < 6) {//section 1,2
-//                                 for (int z = 3; z < 6; z++) {
-//                                     if (lev.read_ini(k, z) == 0) {
-//                                         if (a != k || b != z) {
-//                                             compare_ans(a, b, k, z, lev, sim);
-//                                         }
-// //                                      k = 0;
-// //                                      a = 2;
-//                                     }
-//                                 }
-//                             }
-//                             if (b > 5 && b < 9) {//section 1,3
-//                                 for (int z = 6; z < 9; z++) {
-//                                     if (lev.read_ini(k, z) == 0) {
-//                                         if (a != k || b != z) {
-//                                             compare_ans(a, b, k, z, lev, sim);
-//                                         }
-// //                                      k = 0;
-// //                                      a= 5;
-//                                     }
-//                                 }
-//                             }
-//                         }//end section 1,k
-//                         if (a > 2 && a < 6) {//section 2, k
-//                             if (b < 3) {// section 2,1
-//                                 for (int z = 0; z < 3; z++) {
-//                                     if (lev.read_ini(k + 3, z) == 0) {
-//                                         if (a != k + 3 || b != z) {
-//                                             compare_ans(a, b, k + 3, z, lev, sim);
-//                                         }
-// //                                      k = 0;
-// //                                      a = -1;
-//                                     }
-//                                 }
-//                             }
-//                             if (b > 2 && b < 6) {//section 2,2
-//                                 for (int z = 3; z < 6; z++) {
-//                                     if (lev.read_ini(k + 3, z) == 0) {
-//                                         if (a != k + 3 || b != z) {
-//                                             compare_ans(a, b, k + 3, z, lev, sim);
-//                                         }
-// //                                      k = 0;
-// //                                      a = 2;
-//                                     }
-//                                 }
-//                             }
-//                             if (b > 5 && b < 9) {//section 2,3
-//                                 for (int z = 6; z < 9; z++) {
-//                                     if (lev.read_ini(k + 3, z) == 0) {
-//                                         if (a != k + 3 || b != z) {
-//                                             compare_ans(a, b, k + 3, z, lev, sim);
-//                                         }
-// //                                      k = 0;
-// //                                      a = 5;
-//                                     }
-//                                 }
-//                             }
-//                         }//end section 2,k
-//                         if (a > 5 && a < 9) {//section 3,k
-//                             if (b < 3) {// section 3,1
-//                                 for (int z = 0; z < 3; z++) {
-//                                     if (lev.read_ini(k + 6, z) == 0) {
-//                                         compare_ans(a, b, k + 6, z, lev, sim);
-// //                                      k = 0;
-// //                                      a = -1;
-//                                     }
-//                                 }
-//                             }
-//                             if (b > 2 && b < 6) {//section 3,2
-//                                 for (int z = 3; z < 6; z++) {
-//                                     if (lev.read_ini(k + 6, z) == 0) {
-//                                         if (a != k + 6 || b != z) {
-//                                             compare_ans(a, b, k + 6, z, lev, sim);
-//                                         }
-// //                                      k = 0;
-// //                                      a = 2;
-//                                     }
-//                                 }
-//                             }
-//                             if (b > 5 && b < 9) {//section 3,3
-//                                 for (int z = 6; z < 9; z++) {
-//                                     if (lev.read_ini(k + 6, z) == 0) {
-//                                         if (a != k + 6 || b != z) {
-//                                             compare_ans(a, b, k + 6, z, lev, sim);
-//                                         }
-// //                                      k = 0;
-// //                                      a = 5;
-//                                     }
-//                                 }
-//                             }
-//                         }//end section 3,k
-//                     }// end section checker
+                    //SECTION CHECKER
+                    if (k < 3) {
+                        if (a < 3) { //Section 1
+                            if (b < 3) {// section 1,1
+                                for (int z = 0; z < 3; z++) {
+                                    if (lev.read_ini(k, z) == 0) {
+                                        if (a != k || b != z) {
+                                            compare_ans(a, b, k, z);
+                                        }
+                                        //k = 0;
+                                        //a = -1;
+                                    }
+                                }
+                            }
+                            if (b > 2 && b < 6) {//section 1,2
+                                for (int z = 3; z < 6; z++) {
+                                    if (lev.read_ini(k, z) == 0) {
+                                        if (a != k || b != z) {
+                                            compare_ans(a, b, k, z);
+                                        }
+//                                      k = 0;
+//                                      a = 2;
+                                    }
+                                }
+                            }
+                            if (b > 5 && b < 9) {//section 1,3
+                                for (int z = 6; z < 9; z++) {
+                                    if (lev.read_ini(k, z) == 0) {
+                                        if (a != k || b != z) {
+                                            compare_ans(a, b, k, z);
+                                        }
+//                                      k = 0;
+//                                      a= 5;
+                                    }
+                                }
+                            }
+                        }//end section 1,k
+                        if (a > 2 && a < 6) {//section 2, k
+                            if (b < 3) {// section 2,1
+                                for (int z = 0; z < 3; z++) {
+                                    if (lev.read_ini(k + 3, z) == 0) {
+                                        if (a != k + 3 || b != z) {
+                                            compare_ans(a, b, k + 3, z);
+                                        }
+//                                      k = 0;
+//                                      a = -1;
+                                    }
+                                }
+                            }
+                            if (b > 2 && b < 6) {//section 2,2
+                                for (int z = 3; z < 6; z++) {
+                                    if (lev.read_ini(k + 3, z) == 0) {
+                                        if (a != k + 3 || b != z) {
+                                            compare_ans(a, b, k + 3, z);
+                                        }
+//                                      k = 0;
+//                                      a = 2;
+                                    }
+                                }
+                            }
+                            if (b > 5 && b < 9) {//section 2,3
+                                for (int z = 6; z < 9; z++) {
+                                    if (lev.read_ini(k + 3, z) == 0) {
+                                        if (a != k + 3 || b != z) {
+                                            compare_ans(a, b, k + 3, z);
+                                        }
+//                                      k = 0;
+//                                      a = 5;
+                                    }
+                                }
+                            }
+                        }//end section 2,k
+                        if (a > 5 && a < 9) {//section 3,k
+                            if (b < 3) {// section 3,1
+                                for (int z = 0; z < 3; z++) {
+                                    if (lev.read_ini(k + 6, z) == 0) {
+                                        compare_ans(a, b, k + 6, z);
+//                                      k = 0;
+//                                      a = -1;
+                                    }
+                                }
+                            }
+                            if (b > 2 && b < 6) {//section 3,2
+                                for (int z = 3; z < 6; z++) {
+                                    if (lev.read_ini(k + 6, z) == 0) {
+                                        if (a != k + 6 || b != z) {
+                                            compare_ans(a, b, k + 6, z);
+                                        }
+//                                      k = 0;
+//                                      a = 2;
+                                    }
+                                }
+                            }
+                            if (b > 5 && b < 9) {//section 3,3
+                                for (int z = 6; z < 9; z++) {
+                                    if (lev.read_ini(k + 6, z) == 0) {
+                                        if (a != k + 6 || b != z) {
+                                            compare_ans(a, b, k + 6, z);
+                                        }
+//                                      k = 0;
+//                                      a = 5;
+                                    }
+                                }
+                            }
+                        }//end section 3,k
+                    }// end section checker
                 }//end k
             }
         }
         return;
     }
+}
 
     void four::compare_ans(int a, int b, int m, int n) {
-        //std::cout << a << b << x <<y <<std::endl;
-       // for (int q = 0; q < 9; q++) {
-       //     if (prob_row[a][b][q] == x && prob_col[a][b][q] == y) {
-       //         return;
-       //     }
-       //     for (int z = 0; z < 9; z++) {
-       //         if (answers[a][b][q] == answers[x][y][z] && answers[a][b][q] != 99) {
-       //             if (a == b && x == y) {
-       //                 return;
-       //             }
+       for (int q = 0; q < 9; q++) {
+           if (prob_row[a][b][q] == m && prob_col[a][b][q] == n) {
+               return;
+           }
+           for (int z = 0; z < 9; z++) {
+               if (answers[a][b][q] == answers[m][n][z] && answers[a][b][q] != 99) {
+                   if (a == m && b == n) {
+                       return;
+                   }
                     prob_row[a][b][last_prob[a][b]] = m;
                     prob_col[a][b][last_prob[a][b]] = n;
                     last_prob[a][b]++;
                     //return;
-       //         }
-       //     }
-       // }
+               }
+           }
+       }
 //        return false;
     }
 

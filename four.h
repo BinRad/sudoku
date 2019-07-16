@@ -103,8 +103,8 @@ namespace sudoku_one {
     int entry;
     int issue_x; //row value of issue
     int issue_y; //col value of issue
-    int prob_row[9][9][9]; //contains x for any possible confliciting entry of ij
-    int prob_col[9][9][9]; //contains y for any possible confliciting entry of ij
+    int prob_row[9][9][81]; //contains x for any possible confliciting entry of ij
+    int prob_col[9][9][81]; //contains y for any possible confliciting entry of ij
     int answers[9][9][9]; //possible answers for each i,j
     int current_prob[9][9]; //index of problem to investigate currently for ij
     int last_prob[9][9]; //index of last problem for each i,j
