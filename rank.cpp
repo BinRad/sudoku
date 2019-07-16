@@ -9,8 +9,6 @@ namespace sudoku_one {
         while (counter < 81) {
             lev.clearrank();
             //RANK
-            int x = 0;
-            int y = 0;
             for (int i = 0; i < 9; i++) {
                 for (int j = 0; j < 9; j++) {
                     if (lev.read(i, j) != 0) {
@@ -121,8 +119,6 @@ namespace sudoku_one {
           while (counter < 81) {
               lev.clearrank();
               //RANK
-              int x = 0;
-              int y = 0;
               for (int i = 0; i < 9; i++) {
                   for (int j = 0; j < 9; j++) {
                       if (lev.read(i, j) != 0) {
@@ -231,7 +227,8 @@ namespace sudoku_one {
           }
         }
     void rank::beginning(){
-      current == 0;}
+      current = 0;
+  }
     int const rank::getindex(int x, int y) {
         int a =0;
         for(a = 0; a < 81; a++) {
@@ -246,14 +243,14 @@ namespace sudoku_one {
 
     }
     int const rank::getrow(int index) {
-      if(index = 99){
+      if(index == 99){
           return rows[current];
       }else{
         return rows[index];
       }
     }
     int const rank::getcol(int index) {
-      if(index = 99){
+      if(index == 99){
           return cols[current];
       }else{
         return cols[index];

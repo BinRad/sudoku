@@ -90,7 +90,7 @@ namespace sudoku_one {
     void find_poss_entries(sudoku_one::board &lev, sudoku_one::rank &sim);
     bool poss_entry_checker(int a, int b, int d, sudoku_one::board &lev, sudoku_one::rank &sim);
     void make_prob(sudoku_one::board &lev, sudoku_one::rank &sim);
-    void compare_ans(int a,int b,int x,int y,sudoku_one::board &lev, sudoku_one::rank &sim);
+    void compare_ans(int a,int b,int m,int n);
     int free_entry(sudoku_one::board &lev, sudoku_one::rank &sim);
     int check_for_free(sudoku_one::board &lev, sudoku_one::rank &sim);
     void free_entry_helper(sudoku_one::board &lev, sudoku_one::rank &sim);

@@ -41,6 +41,7 @@ bool solve(sudoku_one::board &lev, sudoku_one::rank &sim, sudoku_one::poss &taho
     int i, j;
     i = sim.getrow(index);
     j = sim.getcol(index);
+    lev.printout(4);
     if(lev.read_ini(i,j)!= 0){
       solve(lev,sim,tahor,index+1);
       return true;
@@ -65,7 +66,7 @@ bool solve(sudoku_one::board &lev, sudoku_one::rank &sim, sudoku_one::poss &taho
       index = 0;
     } else { index++;}
     lev.mod(i,j,entry);
-    solve(lev,sim,tahor,index);
+    return solve(lev,sim,tahor,index);
   }
 
 
