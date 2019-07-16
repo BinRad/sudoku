@@ -39,7 +39,7 @@
         //prob_col
         //lastly this will mark last prob after gettng to the
         //last prob by inserting all of the ones before it
-//bool compare_ans(int a,int b,int x,int y,sudoku_one::board &lev, sudoku_one::rank &sim);
+//void compare_ans(int a,int b,int x,int y,sudoku_one::board &lev, sudoku_one::rank &sim);
         //takes row col and compares it to the toher row cols
         // passed in. If they ever have any fo the same possible answers
         //then they are stored in prob_row and prob_col
@@ -90,7 +90,7 @@ namespace sudoku_one {
     void find_poss_entries(sudoku_one::board &lev, sudoku_one::rank &sim);
     bool poss_entry_checker(int a, int b, int d, sudoku_one::board &lev, sudoku_one::rank &sim);
     void make_prob(sudoku_one::board &lev, sudoku_one::rank &sim);
-    bool compare_ans(int a,int b,int x,int y,sudoku_one::board &lev, sudoku_one::rank &sim);
+    void compare_ans(int a,int b,int x,int y,sudoku_one::board &lev, sudoku_one::rank &sim);
     int free_entry(sudoku_one::board &lev, sudoku_one::rank &sim);
     int check_for_free(sudoku_one::board &lev, sudoku_one::rank &sim);
     void free_entry_helper(sudoku_one::board &lev, sudoku_one::rank &sim);
