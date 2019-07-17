@@ -16,11 +16,13 @@ namespace sudoku_one {
                     }
                 }
             }
+//            lev.printout(3);
             // SUM SECTION
             int section[9];
             for (int i = 0; i < 9; i++) {
                 section[i] = 0;
             }
+
             for (int k = 0; k < 3; k++) { // goes through each section
                 for (int i = 0; i < 3; i++) { //rows
                     for (int j = 0; j < 3; j++) { //columns
@@ -30,21 +32,25 @@ namespace sudoku_one {
                     }
                 }
             }
-            // add sum section value to eahc entry in that SECTION
-            // if there is an entry there alredy then we rank it 0 which is what
+//            lev.printout(3);
+            // add sum section value to each entry in that SECTION
+            // if there is an entry there already then we rank it 0 which is what
             // the if and else statements do
             for (int k = 0; k < 3; k++) { // goes through each section
                 for (int i = 0; i < 3; i++) { //rows
                     for (int j = 0; j < 3; j++) { //columns
                         if (lev.readrank(i, j + (k * 3)) == 0) {
                             lev.modrank(i, j + (k * 3), lev.readrank(i, j + (k * 3)) + section[k]);
-                        } else { lev.modrank(i, j + (k * 3), 0); }
+                        }
+                        //else { lev.modrank(i, j + (k * 3), 0); }
                         if (lev.readrank(i + 3, j + (k * 3)) == 0) {
                             lev.modrank(i + 3, j + (k * 3), lev.readrank(i + 3, j + (k * 3)) + section[k + 3]);
-                        } else { lev.modrank(3 + i, j + (k * 3), 0); }
+                        }
+                        //else { lev.modrank(3 + i, j + (k * 3), 0); }
                         if (lev.readrank(i + 6, j + (k * 3)) == 0) {
                             lev.modrank(i + 6, j + (k * 3), lev.readrank(i + 6, j + (k * 3)) + section[k + 6]);
-                        } else { lev.modrank(i + 6, j + (k * 3), 0); }
+                        }
+                        //else { lev.modrank(i + 6, j + (k * 3), 0); }
                     }
                 }
             }
@@ -58,42 +64,61 @@ namespace sudoku_one {
                     }
                 }
                 for (int q = 0; q < 9; q++) {
-                    if (lev.readrank(i, q) != 0) {
+                    if (lev.read(i, q) == 0) {
                         lev.modrank(i, q, lev.readrank(i, q) + row);
+//                        std::cout << "i,q" << i <<q << "    rank:  " << lev.readrank(i, q) + row << std::endl;
                     }
                 }
             }
+            //columns
+            int col = 0;
+            for (int j = 0; j < 9; j++) { //cols
+                col = 0;
+                for (int i = 0; i < 9; i++) { //rows
+                    if (lev.read(i, j) != 0) {
+                        col++; // store how many values are in the row
+                    }
+                }
+                for (int q = 0; q < 9; q++) {
+                    if (lev.read(q, j) == 0) {
+                        lev.modrank(q, j, lev.readrank(q, j) + col);
+ //                       std::cout << "q,j" << q <<j << "    rank:  " << lev.readrank(q, j) + col << std::endl;
+                    }
+                }
+            }
+//            lev.printout();
+//            lev.printout(3);
+//            lev.printout(4);
             //find the most likely one
             int i = 0;
             int j = 0;
             int temp = 0;
             for (int a = 0; a < 9; a++) { //rows
                 for (int b = 0; b < 9; b++) { //columns
-                    if (lev.readrank(a, b) > temp) {
-                        i = a;
-                        j = b;
-                        temp = lev.readrank(i, j);
+                    if (lev.readrank(a, b) >= temp) {
+                        if(lev.read(i,j) == 0) {
+                            i = a;
+                            j = b;
+                            temp = lev.readrank(i, j);
+                        }
                     }
                 }
             }
-            //std::cout << "i,j: " << i<< ","<< j << std::endl;
+        //    std::cout << "i,j: " << i<< ","<< j << std::endl;
             rows[counter] = i;
             cols[counter] = j;
             lev.mod(i, j, 5);
-            // lev.printout();
-            // lev.printout(4);
             counter++;
             //end while
         }
-        bool temp = false;
+        int temp = 0;
         for(int a = 0; a < 81; a++){
           if(rows[a] == 0 && cols[a] == 0){
-            if(temp ==true){
-              tail = a;
-              //std::cout<< rows[a]<< " here it is " <<cols[a]<<a  <<std::endl;
-              a = 150;
-            }
-            temp = true;
+              temp++;
+              if(temp == 1){
+                 tail = a;
+//                std::cout<< rows[a]<< " here it is " <<cols[a]<<a  <<std::endl;
+             }
           }
         }
         //end constructor
