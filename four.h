@@ -53,6 +53,10 @@
         //step 2: call helper: using bad entry row and col, find which i,j
             //caused entry at INDEX to be marked bad.
         //step 3: return entry
+//int get_bad_ans(sudoku_one::board &lev, sudoku_one::rank &sim);
+        //tries to find the optimal answer to free that isnt in use yet
+//bool get_bad_ans_checker(sudoku_one::board &lev, sudoku_one::rank &sim, int setting = 0);
+        //checks each row col and section to see if bad ans is being used
 //int check_for_free(sudoku_one::board &lev, sudoku_one::rank &sim);
         //use finder checker to check any avaialble values in the
         //answers matrix that haven't been marked as bad
@@ -71,6 +75,9 @@
 //void mark_good(sudoku_one::board &lev, sudoku_one::rank &sim);
         //takes out current prob from bad_ans, bad_entry_col, bad_entry_row
         // and puts them in the back. It then pushes everything forward.
+//bool is_done(sudoku_one::board &lev, sudoku_one::rank &sim);
+        //checks to see if program is finshed by goig and making sure
+        //there is an entry in each spot
 
 #ifndef SUDOKU_ONE_FOUR_H
 #define SUDOKU_ONE_FOUR_H
@@ -92,11 +99,14 @@ namespace sudoku_one {
     void make_prob(sudoku_one::board &lev, sudoku_one::rank &sim);
     void compare_ans(int a,int b,int m,int n);
     int free_entry(sudoku_one::board &lev, sudoku_one::rank &sim);
+    int get_bad_ans(sudoku_one::board &lev, sudoku_one::rank &sim);
+    bool get_bad_ans_checker(sudoku_one::board &lev, sudoku_one::rank &sim, int setting = 0);
     int check_for_free(sudoku_one::board &lev, sudoku_one::rank &sim);
     void free_entry_helper(sudoku_one::board &lev, sudoku_one::rank &sim);
     void set_issue(sudoku_one::board &lev, sudoku_one::rank &sim);
     void next_problem(sudoku_one::board &lev, sudoku_one::rank &sim);
     void mark_good(sudoku_one::board &lev, sudoku_one::rank &sim);
+    bool is_done(sudoku_one::board &lev, sudoku_one::rank &sim);
   private:
     int i; //current row
     int j; //current column

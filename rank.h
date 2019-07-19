@@ -19,6 +19,7 @@ namespace sudoku_one {
       int const getrow(int index = 99);//give index get i value
       int const getcol(int index = 99);//gve index get j value
       int const getcurrent();
+      void add_to_queue(int i, int j);
     private:
       int rows[81];
       int cols[81];

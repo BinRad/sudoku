@@ -20,7 +20,7 @@ namespace sudoku_one {
                     answers[a][b][c] = 99;
                     bad_ans[a][b][c] = 99;
                 }
-                for(int w = 0; w < 81; w++){
+                for (int w = 0; w < 81; w++) {
                     prob_row[a][b][w] = 99;
                     prob_col[a][b][w] = 99;
                 }
@@ -38,17 +38,27 @@ namespace sudoku_one {
 
     //modification functions
     void four::solve(sudoku_one::board &lev, sudoku_one::rank &sim) {
+        std::cout << std::endl;
         entry = finder(lev, sim);
         std::cout << i << j << entry << std::endl;
         lev.mod(i, j, entry);
-        lev.printout();
-        lev.printout(4);
+        //  lev.printout();
+        //    lev.printout(4);
         sim.advance(i, j);
         i = sim.getrow();
         j = sim.getcol();
+        if (i > 8 || j > 8) {
+            if (is_done(lev, sim)) {
+                return;
+            } else {
+                sim.beginning();
+                i = sim.getrow();
+                j = sim.getcol();
+            }
+        }
         entry = 0;
-//      lev.printout();
-//      lev.printout(4);
+        lev.printout();
+        lev.printout(4);
         solve(lev, sim);
     }
 
@@ -61,13 +71,13 @@ namespace sudoku_one {
                 std::cout << i << j << "99 to free entry awayyyyy" << std::endl;
                 entry = free_entry(lev, sim);
                 // free_entry will update current_ans
+                if (entry == 99) {
+                    sim.add_to_queue(i, j);
+                    sim.advance();
+                    solve(lev, sim);
+                }
                 return entry;
             }
-//            else {
-//                current_ans[i][j]++;
-//                entry = answers[i][j][current_ans[i][j]];
-//            }
-            std::cout << i << j << entry << "indisde while" << std::endl;
         }
         return entry;
     }
@@ -80,16 +90,20 @@ namespace sudoku_one {
         //just if statement when k == j when applicable etc...
         for (int k = 0; k < 9; k++) {
             if (lev.read(i, k) == entry) {
-                issue_x = i;
-                issue_y = k;
-                mark_bad(lev, sim);
-                return false;
+                if (j != k) {
+                    issue_x = i;
+                    issue_y = k;
+                    mark_bad(lev, sim);
+                    return false;
+                }
             }
             if (lev.read(k, j) == entry) {
-                issue_x = k;
-                issue_y = j;
-                mark_bad(lev, sim);
-                return false;
+                if (i != k) {
+                    issue_x = k;
+                    issue_y = j;
+                    mark_bad(lev, sim);
+                    return false;
+                }
             }
             //SECTION CHECKER
             //std::cout << "point: " << i << "," << j << "    entry: " << entry << std::endl;
@@ -98,30 +112,36 @@ namespace sudoku_one {
                     if (j < 3) {// section 1,1
                         for (int a = 0; a < 3; a++) {
                             if (lev.read(k, a) == entry) {
-                                issue_x = k;
-                                issue_y = a;
-                                mark_bad(lev, sim);
-                                return false;
+                                if (i != k || j != a) {
+                                    issue_x = k;
+                                    issue_y = a;
+                                    mark_bad(lev, sim);
+                                    return false;
+                                }
                             }
                         }
                     }
                     if (j > 2 && j < 6) {//section 1,2
                         for (int a = 3; a < 6; a++) {
                             if (lev.read(k, a) == entry) {
-                                issue_x = k;
-                                issue_y = a;
-                                mark_bad(lev, sim);
-                                return false;
+                                if (i != k || j != a) {
+                                    issue_x = k;
+                                    issue_y = a;
+                                    mark_bad(lev, sim);
+                                    return false;
+                                }
                             }
                         }
                     }
                     if (j > 5 && j < 9) {//section 1,3
                         for (int a = 6; a < 9; a++) {
                             if (lev.read(k, a) == entry) {
-                                issue_x = k;
-                                issue_y = a;
-                                mark_bad(lev, sim);
-                                return false;
+                                if (i != k || j != a) {
+                                    issue_x = k;
+                                    issue_y = a;
+                                    mark_bad(lev, sim);
+                                    return false;
+                                }
                             }
                         }
                     }
@@ -130,30 +150,36 @@ namespace sudoku_one {
                     if (j < 3) {// section 2,1
                         for (int a = 0; a < 3; a++) {
                             if (lev.read(k + 3, a) == entry) {
-                                issue_x = k + 3;
-                                issue_y = a;
-                                mark_bad(lev, sim);
-                                return false;
+                                if (i != k + 3 || j != a) {
+                                    issue_x = k + 3;
+                                    issue_y = a;
+                                    mark_bad(lev, sim);
+                                    return false;
+                                }
                             }
                         }
                     }
                     if (j > 2 && j < 6) {//section 2,2
                         for (int a = 3; a < 6; a++) {
                             if (lev.read(k + 3, a) == entry) {
-                                issue_x = k + 3;
-                                issue_y = a;
-                                mark_bad(lev, sim);
-                                return false;
+                                if (i != k + 3 || j != a) {
+                                    issue_x = k + 3;
+                                    issue_y = a;
+                                    mark_bad(lev, sim);
+                                    return false;
+                                }
                             }
                         }
                     }
                     if (j > 5 && j < 9) {//section 2,3
                         for (int a = 6; a < 9; a++) {
                             if (lev.read(k + 3, a) == entry) {
-                                issue_x = k + 3;
-                                issue_y = a;
-                                mark_bad(lev, sim);
-                                return false;
+                                if (i != k + 3 || j != a) {
+                                    issue_x = k + 3;
+                                    issue_y = a;
+                                    mark_bad(lev, sim);
+                                    return false;
+                                }
                             }
                         }
                     }
@@ -162,30 +188,36 @@ namespace sudoku_one {
                     if (j < 3) {// section 3,1
                         for (int a = 0; a < 3; a++) {
                             if (lev.read(k + 6, a) == entry) {
-                                issue_x = k + 6;
-                                issue_y = a;
-                                mark_bad(lev, sim);
-                                return false;
+                                if (i != k + 6 || j != a) {
+                                    issue_x = k + 6;
+                                    issue_y = a;
+                                    mark_bad(lev, sim);
+                                    return false;
+                                }
                             }
                         }
                     }
                     if (j > 2 && j < 6) {//section 3,2
                         for (int a = 3; a < 6; a++) {
                             if (lev.read(k + 6, a) == entry) {
-                                issue_x = k + 6;
-                                issue_y = a;
-                                mark_bad(lev, sim);
-                                return false;
+                                if (i != k + 6 || j != a) {
+                                    issue_x = k + 6;
+                                    issue_y = a;
+                                    mark_bad(lev, sim);
+                                    return false;
+                                }
                             }
                         }
                     }
                     if (j > 5 && j < 9) {//section 3,3
                         for (int a = 6; a < 9; a++) {
                             if (lev.read(k + 6, a) == entry) {
-                                issue_x = k + 6;
-                                issue_y = a;
-                                mark_bad(lev, sim);
-                                return false;
+                                if (i != k + 6 || j != a) {
+                                    issue_x = k + 6;
+                                    issue_y = a;
+                                    mark_bad(lev, sim);
+                                    return false;
+                                }
                             }
                         }
                     }
@@ -197,18 +229,19 @@ namespace sudoku_one {
 
     void four::mark_bad(sudoku_one::board &lev, sudoku_one::rank &sim) {
         //take entry out of answers array
+
         int tempans = answers[i][j][current_ans[i][j]];
         for (int c = current_ans[i][j]; c <= last_ans[i][j]; c++) {
-            if(c+1 < 9) {
+            if (c + 1 < 9) {
                 answers[i][j][c] = answers[i][j][c + 1];
             }
         }
         last_ans[i][j]--;
-        for(int d = last_ans[i][j]; d < 9; d++){
+        for (int d = last_ans[i][j]; d < 9; d++) {
             answers[i][j][d] = 99;
         }
         int d = 0;
-        while (bad_ans[i][j][d] != 99) {
+        while (bad_ans[i][j][d] != 99 && d < 9 && bad_ans[i][j][d] != tempans) {
             d++;
         }
         bad_ans[i][j][d] = tempans;
@@ -468,33 +501,33 @@ namespace sudoku_one {
                     }//end k
                 }
             }
+        }
     }
-}
 
     void four::compare_ans(int a, int b, int m, int n) {
-       for (int q = 0; q < 9; q++) {
-           if (prob_row[a][b][q] == m && prob_col[a][b][q] == n) {
-               return;
-           }
-           for (int z = 0; z < 9; z++) {
-               if (answers[a][b][q] == answers[m][n][z] && answers[a][b][q] != 99) {
-                   //make sure its not the actual ij
-                   if (a == m && b == n) {
-                       return;
-                   }
-                   //make sure there are nor repetitions
-                   for(int x = 0; x < 81; x++){
-                       if(prob_row[a][b][x] == m && prob_col[a][b][x] == n){
-                           return;
-                       }
-                   }
+        for (int q = 0; q < 9; q++) {
+            if (prob_row[a][b][q] == m && prob_col[a][b][q] == n) {
+                return;
+            }
+            for (int z = 0; z < 9; z++) {
+                if (answers[a][b][q] == answers[m][n][z] && answers[a][b][q] != 99) {
+                    //make sure its not the actual ij
+                    if (a == m && b == n) {
+                        return;
+                    }
+                    //make sure there are nor repetitions
+                    for (int x = 0; x < 81; x++) {
+                        if (prob_row[a][b][x] == m && prob_col[a][b][x] == n) {
+                            return;
+                        }
+                    }
                     prob_row[a][b][last_prob[a][b]] = m;
                     prob_col[a][b][last_prob[a][b]] = n;
                     last_prob[a][b]++;
                     //return;
-               }
-           }
-       }
+                }
+            }
+        }
 //        return false;
     }
 
@@ -505,21 +538,222 @@ namespace sudoku_one {
             std::cout << " found free: " << entry << std::endl;
             return temp;
         } else {
-            entry = bad_ans[i][j][current_prob[i][j]];
+            //calls function which finds
+            entry = bad_ans[i][j][0];
             if (entry == 99) { //if there is no current entry
-                //current_prob[i][j] = 0;
-                if (entry == 99) {
-                    //if there are no entries to free_entry
-                    //then there is a real issue
-                    std::cout << "no entries to free" << std::endl;
-                    return 99;
-                }
+                sim.add_to_queue(i,j);
+                sim.advance();
+                solve(lev,sim);
             }
+            get_bad_ans(lev, sim);
             set_issue(lev, sim);
             mark_good(lev, sim); // puts entry in answers[0] and put probrow in back
             free_entry_helper(lev, sim);
         }
         return entry;
+    }
+
+    int four::get_bad_ans(sudoku_one::board &lev, sudoku_one::rank &sim) {
+        int g = 0;
+        while (g <= last_prob[i][j]) {
+            entry = bad_ans[i][j][g];
+            if (get_bad_ans_checker(lev, sim, 0)) {
+                return entry;
+            }
+            g++;
+        }
+        entry = bad_ans[i][j][current_prob[i][j]];
+        get_bad_ans_checker(lev, sim, 1);
+        return entry;
+    }
+
+    bool four::get_bad_ans_checker(sudoku_one::board &lev, sudoku_one::rank &sim, int setting) {
+        //possible issue that entry is being checked against
+        //itself since k does not skip over the value that it is supposed to be
+        //iterating through
+        //may cause it to passover a valid answer. easy fix if necessary
+        //just if statement when k == j when applicable etc...
+        for (int k = 0; k < 9; k++) {
+            if (lev.read(i, k) == entry) {
+                if (j != k) {
+                    issue_x = i;
+                    issue_y = k;
+                    if (setting == 1) {
+                        lev.mod(issue_x, issue_y, 0);
+                        sim.add_to_queue(issue_x, issue_y);
+                    } else {
+                        return false;
+                    }
+                }
+            }
+            if (lev.read(k, j) == entry) {
+                if (i != k) {
+                    issue_x = k;
+                    issue_y = j;
+                    if (setting == 1) {
+                        lev.mod(issue_x, issue_y, 0);
+                        sim.add_to_queue(issue_x, issue_y);
+                    } else {
+                        return false;
+                    }
+                }
+            }
+            //SECTION CHECKER
+            //std::cout << "point: " << i << "," << j << "    entry: " << entry << std::endl;
+            if (k < 3) {
+                if (i < 3) { //Section 1
+                    if (j < 3) {// section 1,1
+                        for (int a = 0; a < 3; a++) {
+                            if (lev.read(k, a) == entry) {
+                                if (i != k || j != a) {
+                                    issue_x = k;
+                                    issue_y = a;
+                                    if (setting == 1) {
+                                        lev.mod(issue_x, issue_y, 0);
+                                        sim.add_to_queue(issue_x, issue_y);
+                                    } else {
+                                        return false;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    if (j > 2 && j < 6) {//section 1,2
+                        for (int a = 3; a < 6; a++) {
+                            if (lev.read(k, a) == entry) {
+                                if (i != k || j != a) {
+                                    issue_x = k;
+                                    issue_y = a;
+                                    if (setting == 1) {
+                                        lev.mod(issue_x, issue_y, 0);
+                                        sim.add_to_queue(issue_x, issue_y);
+                                    } else {
+                                        return false;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    if (j > 5 && j < 9) {//section 1,3
+                        for (int a = 6; a < 9; a++) {
+                            if (lev.read(k, a) == entry) {
+                                if (i != k || j != a) {
+                                    issue_x = k;
+                                    issue_y = a;
+                                    if (setting == 1) {
+                                        lev.mod(issue_x, issue_y, 0);
+                                        sim.add_to_queue(issue_x, issue_y);
+                                    } else {
+                                        return false;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }//end section 1,k
+                if (i > 2 && i < 6) {//section 2, k
+                    if (j < 3) {// section 2,1
+                        for (int a = 0; a < 3; a++) {
+                            if (lev.read(k + 3, a) == entry) {
+                                if (i != k + 3 || j != a) {
+                                    issue_x = k + 3;
+                                    issue_y = a;
+                                    if (setting == 1) {
+                                        lev.mod(issue_x, issue_y, 0);
+                                        sim.add_to_queue(issue_x, issue_y);
+                                    } else {
+                                        return false;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    if (j > 2 && j < 6) {//section 2,2
+                        for (int a = 3; a < 6; a++) {
+                            if (lev.read(k + 3, a) == entry) {
+                                if (i != k + 3 || j != a) {
+                                    issue_x = k + 3;
+                                    issue_y = a;
+                                    if (setting == 1) {
+                                        lev.mod(issue_x, issue_y, 0);
+                                        sim.add_to_queue(issue_x, issue_y);
+                                    } else {
+                                        return false;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    if (j > 5 && j < 9) {//section 2,3
+                        for (int a = 6; a < 9; a++) {
+                            if (lev.read(k + 3, a) == entry) {
+                                if (i != k + 3 || j != a) {
+                                    issue_x = k + 3;
+                                    issue_y = a;
+                                    if (setting == 1) {
+                                        lev.mod(issue_x, issue_y, 0);
+                                        sim.add_to_queue(issue_x, issue_y);
+                                    } else {
+                                        return false;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }//end section 2,k
+                if (i > 5 && i < 9) {//section 3,k
+                    if (j < 3) {// section 3,1
+                        for (int a = 0; a < 3; a++) {
+                            if (lev.read(k + 6, a) == entry) {
+                                if (i != k + 6 || j != a) {
+                                    issue_x = k + 6;
+                                    issue_y = a;
+                                    if (setting == 1) {
+                                        lev.mod(issue_x, issue_y, 0);
+                                        sim.add_to_queue(issue_x, issue_y);
+                                    } else {
+                                        return false;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    if (j > 2 && j < 6) {//section 3,2
+                        for (int a = 3; a < 6; a++) {
+                            if (lev.read(k + 6, a) == entry) {
+                                if (i != k + 6 || j != a) {
+                                    issue_x = k + 6;
+                                    issue_y = a;
+                                    if (setting == 1) {
+                                        lev.mod(issue_x, issue_y, 0);
+                                        sim.add_to_queue(issue_x, issue_y);
+                                    } else {
+                                        return false;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    if (j > 5 && j < 9) {//section 3,3
+                        for (int a = 6; a < 9; a++) {
+                            if (lev.read(k + 6, a) == entry) {
+                                if (i != k + 6 || j != a) {
+                                    issue_x = k + 6;
+                                    issue_y = a;
+                                    if (setting == 1) {
+                                        lev.mod(issue_x, issue_y, 0);
+                                        sim.add_to_queue(issue_x, issue_y);
+                                    } else {
+                                        return false;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }//end section 3,k
+            }// end section checker
+        }//end k
+        return true;
     }
 
     int four::check_for_free(sudoku_one::board &lev, sudoku_one::rank &sim) {
@@ -590,7 +824,7 @@ namespace sudoku_one {
         int endx = prob_row[i][j][current_prob[i][j]];
         int endy = prob_col[i][j][current_prob[i][j]];
         while (prob_row[i][j][c] != 99 && prob_col[i][j][c] != 99) {
-            if(c+1 < 9) {
+            if (c + 1 < 9) {
                 bad_ans[i][j][c] = bad_ans[i][j][c + 1];
             }
             prob_row[i][j][c] = prob_row[i][j][c + 1];
@@ -600,10 +834,21 @@ namespace sudoku_one {
         prob_row[i][j][c] = endx;
         prob_col[i][j][c] = endy;
         for (int q = last_ans[i][j]; q > 0; q--) {
-            answers[i][j][q] = answers[i][j][q-1];
+            answers[i][j][q] = answers[i][j][q - 1];
         }
         answers[i][j][0] = freeans;
         last_ans[i][j]++;
         current_prob[i][j] = 0;
+    }
+
+    bool four::is_done(sudoku_one::board &lev, sudoku_one::rank &sim) {
+        for (int a = 0; a < 9; a++) {
+            for (int b = 0; b < 9; b++) {
+                if (lev.read(a, b) == 0) {
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 }

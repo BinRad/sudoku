@@ -104,7 +104,7 @@ namespace sudoku_one {
                     }
                 }
             }
-        //    std::cout << "i,j: " << i<< ","<< j << std::endl;
+            std::cout << "i,j: " << i<< ","<< j << std::endl;
             rows[counter] = i;
             cols[counter] = j;
             lev.mod(i, j, 5);
@@ -116,7 +116,7 @@ namespace sudoku_one {
           if(rows[a] == 0 && cols[a] == 0){
               temp++;
               if(temp == 1){
-                 tail = a;
+                 tail = a+1;
 //                std::cout<< rows[a]<< " here it is " <<cols[a]<<a  <<std::endl;
              }
           }
@@ -283,5 +283,16 @@ namespace sudoku_one {
     }
     int const rank::getcurrent(){
         return current;
+    }
+    void rank::add_to_queue(int i, int j){
+        int g = 0;
+        for(g = getindex(i,j); g <= tail; g++){
+            if(g+1 < 81) {
+                rows[g] = rows[g + 1];
+                cols[g] = cols[g + 1];
+            }
+        }
+        rows[tail] = i;
+        cols[tail] = j;
     }
 }
