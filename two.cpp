@@ -172,7 +172,6 @@ int* ranker(sudoku_one::board& lev){
       }
     }
   }
-  lev.printout();
   // SUM SECTION
   int section[9];
   for(int i = 0; i < 9; i++){

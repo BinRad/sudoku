@@ -30,6 +30,8 @@ namespace sudoku_one {
         int init[9][9];
         // matrix that holds general data
         int matrix[9][9];
+        // matrix that holds rank
+        int rank[9][9];
 
     };
 

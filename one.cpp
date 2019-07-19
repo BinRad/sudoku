@@ -65,3 +65,5 @@ lev.printout();
 
     return 0;
 }
+
+#include "board.cpp"

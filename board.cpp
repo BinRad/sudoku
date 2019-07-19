@@ -11,11 +11,12 @@ namespace sudoku_one{
             for(int j = 0; j < 9; j++){
                  init[i][j] = 0;
                  matrix[i][j] = 0;
+                 rank[i][j] = 0;
             }
         }
     }
     board::~board() {//inline function}
-    }
+  }// i tried making a real destructor but it caused the matrices to be deleted prematurely
     // Modification functions
     void board::mod_ini(int x, int y, int entry) {
                 matrix[x][y] = entry;
@@ -24,20 +25,22 @@ namespace sudoku_one{
     void board::mod(int x, int y, int entry) {
         matrix[x][y] = entry;
     }
-    void board::mod_temp(int x, int y, int entry, bool green) {
-        int tempx = x;
-        int tempy = y;
-        if (green) {
-            matrix[x][y] = entry;
-        }
+    void board::modrank(int x, int y, int entry) {
+        rank[x][y] = entry;
     }
     void const board::printout(int m) {
       if(m == 0 || m == 1){
       std::cout << "\n initial board:";
       for(int i = 0; i < 9; i++){
           std::cout << std::endl;
+          if( i == 3 || i==6){
+            std::cout << std::endl;
+          }
           for(int j = 0; j < 9; j++){
               std::cout << init[i][j] << " ";
+              if(j == 2 || j == 5){
+                std::cout << "  ";
+              }
           }
         }
       }
@@ -46,8 +49,14 @@ namespace sudoku_one{
         std::cout << "\n current board:";
         for(int i = 0; i < 9; i++){
             std::cout << std::endl;
+            if( i == 3 || i==6){
+              std::cout << std::endl;
+            }
             for(int j = 0; j < 9; j++){
                 std::cout << matrix[i][j] << " ";
+                if(j == 2 || j == 5){
+                  std::cout << "  ";
+                }
             }
           }
         }
