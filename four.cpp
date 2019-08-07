@@ -38,6 +38,9 @@ namespace sudoku_one {
 
     //modification functions
     void four::solve(sudoku_one::board &lev, sudoku_one::rank &sim) {
+        if(i == 0 && j == 0){
+            std::cout <<  "this" <<  std::endl;
+        }
         std::cout << std::endl;
         entry = finder(lev, sim);
         std::cout << i << j << entry << std::endl;

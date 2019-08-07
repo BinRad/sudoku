@@ -128,10 +128,10 @@ namespace sudoku_one {
             current = getindex(i,j);
         }
       if(current >= tail){
-        current = 80;
-        rows[80] = 99;
-        cols[80] = 99;
-        return false;
+        current = 0;
+//        rows[80] = 99;
+//        cols[80] = 99;
+//        return false;
       }
       else{
         current++;
