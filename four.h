@@ -107,6 +107,9 @@ namespace sudoku_one {
     void next_problem(sudoku_one::board &lev, sudoku_one::rank &sim);
     void mark_good(sudoku_one::board &lev, sudoku_one::rank &sim);
     bool is_done(sudoku_one::board &lev, sudoku_one::rank &sim);
+    void context_check(sudoku_one::board &lev, sudoku_one::rank &sim);
+    void check_sections(sudoku_one::board &lev, sudoku_one::rank &sim, std::string setting = "both");
+    int section_number();
   private:
     int i; //current row
     int j; //current column

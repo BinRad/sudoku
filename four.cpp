@@ -67,6 +67,7 @@ namespace sudoku_one {
 
     int four::finder(sudoku_one::board &lev, sudoku_one::rank &sim) {
         entry = answers[i][j][current_ans[i][j]];
+        context_check(lev,sim);
         //while loop can be skipped if current ans is correct
         while (finder_checker(lev, sim) == false || entry == 99) {
             entry = answers[i][j][current_ans[i][j]];
@@ -853,5 +854,175 @@ namespace sudoku_one {
             }
         }
         return true;
+    }
+
+    void four::context_check(sudoku_one::board &lev, sudoku_one::rank &sim){
+        bool row_fix = false;
+        bool col_fix = false;
+        int countx = 0;
+        int county = 0;
+        for(int x  = (section_number()-1)*3; x < section_number()*3; x++){
+            if(lev.read_ini(x,j) != 0){
+                countx++;
+            }
+            if(lev.read_ini(i,x) != 0){
+                county++;
+            }
+        }
+        if(countx  == 2){
+            check_sections(lev,sim,"row");
+        }
+        if(county == 2){
+            check_sections(lev,sim,"col");
+        }
+    }
+
+    void four::check_sections(sudoku_one::board &lev, sudoku_one::rank &sim, std::string setting){
+        int sect = section_number();
+        int count = 0;
+        if(setting  == "row" || setting  == "both"){
+            if(sect == 1 || sect == 4 || sect == 7){ //
+                for(int x = sect - 1; x < sect + 2; x++){
+                    for(int y = 3; y < 9; y++){
+                        if(x != i){
+                            if(entry == lev.read_ini(x,y)){
+                                count++;
+                            }
+                        }
+                    }
+                }
+                if(count == 2){
+                    lev.mod_ini(i,j, entry);
+                }
+                count = 0;
+            }
+            if(sect == 2 || sect == 5 || sect == 8){
+                for(int x = sect - 2; x < sect + 1; x++){
+                    for(int y = 0; y < 3; y++){
+                        if(x != i){
+                            if(entry == lev.read_ini(x,y)){
+                                count++;
+                            }
+                        }
+                    }
+                    for(int y = 6; y < 9; y++){
+                        if(x != i){
+                            if(entry == lev.read_ini(x,y)){
+                                count++;
+                            }
+                        }
+                    }
+                }
+                if(count == 2){
+                    lev.mod_ini(i,j, entry);
+                }
+                count = 0;
+            }
+            if(sect == 3 || sect == 6 || sect == 9){ //
+                for(int x = sect - 3; x < sect; x++){
+                    for(int y = 0; y < 6; y++){
+                        if(x != i){
+                            if(entry == lev.read_ini(x,y)){
+                                count++;
+                            }
+                        }
+                    }
+                }
+                if(count == 2){
+                    lev.mod_ini(i,j, entry);
+                }
+                count = 0;
+            }
+        }
+        if(setting  == "col" || setting  == "both"){
+            if(sect == 1 || sect == 2 || sect == 3){ //
+                for(int x = 3; x < 9; x++){
+                    for(int y = (sect - 1) * 3; y < sect * 3; y++){
+                        if(y != j){
+                            if(entry == lev.read_ini(x,y)){
+                                count++;
+                            }
+                        }
+                    }
+                }
+                if(count == 2){
+                    lev.mod_ini(i,j, entry);
+                }
+                count = 0;
+            }
+            if(sect == 4 || sect == 5 || sect == 6){
+                for(int y = (sect - 4) * 3; y < (sect-3) * 3; y++){
+                    for(int x = 0; x < 3; x++){
+                        if(y != j){
+                            if(entry == lev.read_ini(x,y)){
+                                count++;
+                            }
+                        }
+                    }
+                    for(int x = 6; x < 9; x++){
+                        if(y != j){
+                            if(entry == lev.read_ini(x,y)){
+                                count++;
+                            }
+                        }
+                    }
+                }
+                if(count == 2){
+                    lev.mod_ini(i,j, entry);
+                }
+                count = 0;
+            }
+            if(sect == 7 || sect == 8 || sect == 9){ //
+                for(int x = 0; x < 6; x++){
+                    for(int y = (sect - 7)*3; y < (sect-6)*3; y++){
+                        if(y != j){
+                            if(entry == lev.read_ini(x,y)){
+                                count++;
+                            }
+                        }
+                    }
+                }
+                if(count == 2){
+                    lev.mod_ini(i,j, entry);
+                }
+                count = 0;
+            }
+        }
+    }
+
+    int four::section_number(){
+        if (i < 3) { //Section 1
+            if (j < 3) {// section 1,1
+                return 1;
+            }
+            if (j > 2 && j < 6) {//section 1,2
+                return 2;
+            }
+            if (j > 5 && j < 9) {//section 1,3
+                return 3;
+            }
+        }
+        if (i > 2 && i < 6) {//section 2, k
+            if (j < 3) {// section 2,1
+                return 4;
+            }
+            if (j > 2 && j < 6) {//section 2,2
+                return 5;
+            }
+            if (j > 5 && j < 9) {//section 2,3
+                return 6;
+            }
+        }
+        if (i > 5 && i < 9) {//section 3,k
+            if (j < 3) {// section 3,1
+                return 7;
+            }
+            if (j > 2 && j < 6) {//section 3,2
+                return 8;
+            }
+            if (j > 5 && j < 9) {//section 3,3
+                return 9;
+            }
+        }
     }
 }

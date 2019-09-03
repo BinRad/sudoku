@@ -19,8 +19,29 @@
 //that row or col in the subsection that we are trying to fill is full in INIT
 //if it is we can lock it in
 
+
+//TODO: ISSUE fix mod_ini to mod since we dont know if first entry
+//that is match is good one unlesss we write function that determines
+//that the i,j is the ony one in its row or column
 void context_check(sudoku_one::board &lev, sudoku_one::rank &sim){
-    check_sections("both")
+    bool row_fix = false;
+    bool col_fix = false;
+    int countx = 0;
+    int county = 0;
+    for(int x  = (section_number()-1)*3; x < section_number()*3; x++){
+        if(lev.read_ini(x,j) != 0){
+            countx++;
+        }
+        if(lev.read_ini(i,x) != 0){
+            county++;
+        }
+    }
+    if(countx  == 2){
+        check_sections("row");
+    }
+    if(county == 2){
+        check_sections("col");
+    }
 }
 
 int section_number(){
@@ -62,7 +83,7 @@ int section_number(){
 void check_sections(sudoku_one::board &lev, sudoku_one::rank &sim){
     int sect = section_number();
     int count = 0;
-//    if(setting  == "row" || setting  == "both"){
+    if(setting  == "row" || setting  == "both"){
         if(sect == 1 || sect == 4 || sect == 7){ //
             for(int x = sect - 1; x < sect + 2; x++){
                 for(int y = 3; y < 9; y++){
@@ -116,11 +137,11 @@ void check_sections(sudoku_one::board &lev, sudoku_one::rank &sim){
             count = 0;
         }
     }
-//    if(setting  == "col" || setting  == "both"){
+    if(setting  == "col" || setting  == "both"){
         if(sect == 1 || sect == 2 || sect == 3){ //
             for(int x = 3; x < 9; x++){
                 for(int y = (sect - 1) * 3; y < sect * 3; y++){
-                    if(x != i){
+                    if(y != j){
                         if(entry == lev.read_ini(x,y)){
                             count++;
                         }
@@ -133,16 +154,16 @@ void check_sections(sudoku_one::board &lev, sudoku_one::rank &sim){
             count = 0;
         }
         if(sect == 4 || sect == 5 || sect == 6){
-            for(int x = sect - 1; x < sect + 2; x++){
-                for(int y = 0; y < 3; y++){
-                    if(x != i){
+            for(int y = (sect - 4) * 3; y < (sect-3) * 3; y++){
+                for(int x = 0; x < 3; x++){
+                    if(y != j){
                         if(entry == lev.read_ini(x,y)){
                             count++;
                         }
                     }
                 }
-                for(int y = 6; y < 9; y++){
-                    if(x != i){
+                for(int x = 6; x < 9; x++){
+                    if(y != j){
                         if(entry == lev.read_ini(x,y)){
                             count++;
                         }
@@ -155,9 +176,9 @@ void check_sections(sudoku_one::board &lev, sudoku_one::rank &sim){
             count = 0;
         }
         if(sect == 7 || sect == 8 || sect == 9){ //
-            for(int x = sect - 1; x < sect + 2; x++){
-                for(int y = 0; y < 6; y++){
-                    if(x != i){
+            for(int x = 0; x < 6; x++){
+                for(int x = (sect - 7)*3; x < (sect-5)*3; x++){
+                    if(y != j){
                         if(entry == lev.read_ini(x,y)){
                             count++;
                         }
